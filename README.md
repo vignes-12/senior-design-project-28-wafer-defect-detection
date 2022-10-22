@@ -3,13 +3,13 @@ This project aims to process a 2D image into a Convolutional Neural Network in o
 
 As of right now, preprocess_images.py will convert 2D images into a grayscale format and displays an image of each magnification, which I will show below. It then displays the number of images scanned as well as an array representation of each grayscale image to the console, also shown below. It also stores all of the data into a pickle file (not included in repository) for later use without the need of pre-processing every time.
 
-Previous image
+# Previous image
 ![10X_BOTEDGE](https://media.github.ncsu.edu/user/19974/files/0dc9f3ba-9082-48b1-b310-fb2f86835af8)
 
-Processed image
+# Processed image
 ![image](https://media.github.ncsu.edu/user/19974/files/cb16a86e-6a2f-4552-988e-898e6b9b13a7)
 
-Console output
+# Console output
 Number of Training Images:  63
 Training Data:  [array([[124, 123, 121, ..., 163, 161, 160],
        [123, 123, 120, ..., 165, 164, 164],
