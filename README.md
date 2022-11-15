@@ -11,13 +11,12 @@ Disclaimer: Preprocessing does not work very well for 100X magnification images,
 magnifications.
 
 # Previous image
-![10X_BOTEDGE](https://media.github.ncsu.edu/user/19974/files/0dc9f3ba-9082-48b1-b310-fb2f86835af8)
+![10X_BOTEDGE](dataset/defective/10X/10X_BOTEDGE.jpg)
 
 # Processed image
 ![img.png](dataset/processed/img.png)
 
 # Console output
-C:\Users\vigne\AppData\Local\Programs\Python\Python38\python.exe C:\senior-design\preprocess_images.py 
 Number of Training Images:  60
 Training Data:  [array([[255, 255, 255, ..., 255, 255, 255],
        [255, 255, 255, ..., 255, 255, 255],
