@@ -13,7 +13,7 @@ clean_src = "clean/10X/10X_CLEAN.jpg"
 # CATEGORIES = ["clean", "defective"]
 
 # List of all lens sizes
-LENS_SIZES = ["5X", "10X", "20X", "50X"]  # need to add 100X later
+LENS_SIZES = ["5X", "10X", "20X"]  # 50X and 100X magnifications do not look good
 
 
 # Function to create training data
@@ -35,7 +35,7 @@ def create_training_data():
                                    cv2.IMREAD_GRAYSCALE)  # converts image to grayscale
             subtracted = cv2.subtract(clean_img_array, img_array)  # subtracts the defective wafers with the clean wafer
             subtracted = cv2.bitwise_not(subtracted)  # inverts the color so defects are black in color
-            (thresh, subtracted) = cv2.threshold(subtracted, 200, 255,
+            (thresh, subtracted) = cv2.threshold(subtracted, 225, 255,
                                                  cv2.THRESH_BINARY)  # produces black and white image
             training_data.append(subtracted)  # appends data to training data
             if first_time:  # shows one image from each magnification
