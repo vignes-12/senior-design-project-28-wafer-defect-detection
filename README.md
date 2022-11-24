@@ -37,19 +37,19 @@ image printed to the console.
 
 # Console output
 ```
-Welcome to the wafer image defect statistical generator!\
-What image magnification would you like to see statistics of? (5X, 10X, 20X)\
-20x\
-You entered a magnification of 20X.\
-What image would you like to generate statistics of?\
-OX9 quadrant3 20X take1.jpg\
-Generating statistics of OX9 QUADRANT3 20X TAKE1.JPG...\
-Number of pixels in image: 10017440\
-Number of defect pixels in image: 29166\
-Percentage of defect pixels in image: 0.29%\
-Number of defects in image: 4\
-Total time: 1.63 seconds\
-Exit? (Y/N)\
+Welcome to the wafer image defect statistical generator!
+What image magnification would you like to see statistics of? (5X, 10X, 20X)
+20x
+You entered a magnification of 20X.
+What image would you like to generate statistics of?
+OX9 quadrant3 20X take1.jpg
+Generating statistics of OX9 QUADRANT3 20X TAKE1.JPG...
+Number of pixels in image: 10017440
+Number of defect pixels in image: 29166
+Percentage of defect pixels in image: 0.29%
+Number of defects in image: 4
+Total time: 1.63 seconds
+Exit? (Y/N)
 y
 ```
 
