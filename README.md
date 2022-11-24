@@ -36,6 +36,7 @@ image printed to the console.
 ![OX9 quadrant3 20X take1](dataset/processed/20X/OX9%20quadrant3%2020X%20take1.jpg)
 
 # Console output
+```
 Welcome to the wafer image defect statistical generator!\
 What image magnification would you like to see statistics of? (5X, 10X, 20X)\
 20x\
@@ -50,4 +51,6 @@ Number of defects in image: 4\
 Total time: 1.63 seconds\
 Exit? (Y/N)\
 y
+```
+
 
