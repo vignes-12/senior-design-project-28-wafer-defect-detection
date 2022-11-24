@@ -52,25 +52,25 @@ def generate_statistics():
     # Prints all relevant statistics onto console
     print(f'Number of pixels in image: {pixel_counter}')
     print(f'Number of defect pixels in image: {defect_pixel_counter}')
-    print(f'Percentage of defect pixels in image: {pct_defect_pixels}%')
+    print(f'Percentage of defect pixels in image: {round(pct_defect_pixels, 2)}%')
     print(f'Number of defects in image: {len(defects)}')
     # print(f'Biggest defect area in image (in pixels): {max_area}')
 
 
 # This controls what image to generate statistics of based on user input.
 while always:
-    magnification = input("What image magnification would you like to see statistics of? (5X, 10X, 20X)\n")
+    magnification = input("What image magnification would you like to see statistics of? (5X, 10X, 20X)\n").upper()
     if magnification in LENS_SIZES:
         print(f'You entered a magnification of {magnification}.')
         lens_path = os.path.join(PROCESSED_DATADIR, magnification)
-        image_name = input('What image would you like to generate statistics of?\n')
+        image_name = input('What image would you like to generate statistics of?\n').upper()
         image_path = os.path.join(lens_path, image_name)
         if os.path.exists(image_path):
             start_time = time.time()  # Calculates time of statistical analysis and displays it to console
             generate_statistics()
             end_time = time.time()
             print(f'Total time: {round(end_time - start_time, 2)} seconds')
-            user_done = input('Exit? (Y/N)\n')
+            user_done = input('Exit? (Y/N)\n').upper()
             if user_done == 'Y':
                 always = False
         else:
@@ -80,7 +80,6 @@ while always:
 
 # Old code that may be useful in the future
 
-# TODO: be able to use this code to generate relevant wafer defect statistics
 # def get_adjacent_defect_pixels(row, column, num_rows, num_columns, defect_pixel_marker, adjacent_defect_pixels):
 #     if row > 0 and defect_pixel_marker[row - 1][column] == 0:
 #         defect_pixel_marker[row - 1][column] = 1
