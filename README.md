@@ -70,7 +70,6 @@ Largest defect size (in pixels): 29732
 Total time: 1.52 seconds
 Exit? (Y/N)
 y
-
 ```
 # Second case: Center image (more defects)
 
@@ -118,6 +117,7 @@ Smallest defect size (in pixels): 21
 Largest defect size (in pixels): 15294
 Total time: 1.34 seconds
 Exit? (Y/N)
+y
 ```
 
 # Third case: Edge image
