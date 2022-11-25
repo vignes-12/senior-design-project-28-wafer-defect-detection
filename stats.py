@@ -32,19 +32,18 @@ def generate_statistics():
     max_defect_size = 100000  # maximum defect size (may need to change this value)
     defects = []  # array to hold all defects
     defect_pixel_counter_contour = 0  # counts number of defect pixels in image using contours
-    defect_pixel_array = []  # holds all defect sizes in pixels
+    defect_sizes = []  # holds all defect sizes in pixels
     defect_coors = []  # holds all coordinates of defects
 
     # For each defect based on the minimum and maximum defect size constraints, calculate the number of defects,
     # the number of total defect pixels and the minimum and maximum defect size
     for count in counts:
-        defect_pixels = cv2.contourArea(count)
+        defect_pixels = round(cv2.contourArea(count))
         if min_defect_size < defect_pixels < max_defect_size:
-            defect_pixel_array.append(defect_pixels)
+            defect_sizes.append(defect_pixels)
             defect_pixel_counter_contour += defect_pixels
             defects.append(count)
 
-    defect_pixel_counter_contour = round(defect_pixel_counter_contour)  # rounds the number of defect pixels for contour
     defect_pixel_counter_array = np.sum(processed_image_data == 0)  # counts number of defect pixels in image in array
     pixel_counter = sum(len(row) for row in processed_image_data)  # counts total number of pixels in image
     # calculates percentage of defect pixels in array and contour respectively
@@ -54,8 +53,8 @@ def generate_statistics():
     pct_error_in_defect_pixels = round(abs(defect_pixel_counter_contour - defect_pixel_counter_array) / \
                                        defect_pixel_counter_array * 100, 2)
     number_of_defects = len(defects)  # counts number of defects in image
-    smallest_defect_size = round(min(defect_pixel_array))   # gets smallest defect size
-    largest_defect_size = round(max(defect_pixel_array))    # gets largest defect size
+    smallest_defect_size = round(min(defect_sizes))   # gets smallest defect size
+    largest_defect_size = round(max(defect_sizes))    # gets largest defect size
 
     # Calculates the x and y coordinates for all defects
     for defect in defects:
@@ -63,7 +62,17 @@ def generate_statistics():
         median_y_coordinate = round(sum(pixel[0][1] for pixel in defect) / len(defect))
         defect_coors.append([median_x_coordinate, median_y_coordinate])
 
-    # Print all relevant statistics of image here
+    # Converts the sizes and coordinates to NumPy arrays for sorting
+    defect_sizes_nparray = np.array(defect_sizes)
+    defect_coors_nparray = np.array(defect_coors)
+
+    sort = np.argsort(defect_sizes_nparray)  # sorts the arrays according to the defect sizes
+
+    # Sorts the sizes and coordinates from largest to smallest size
+    defect_pixel_array_sorted = defect_sizes_nparray[sort][::-1]
+    defect_coors_sorted = defect_coors_nparray[sort][::-1]
+
+    # Prints all relevant statistics below
     print(f'Number of pixels in image: {pixel_counter}')
     print(f'Number of defect pixels in image (in array itself): {defect_pixel_counter_array}')
     print(f'Number of defect pixels in image (using contours): {defect_pixel_counter_contour}')
@@ -72,9 +81,11 @@ def generate_statistics():
     print(f'Percentage of defect pixels in image (in array itself): {pct_defect_pixels_array}%')
     print(f'Percentage of defect pixels in image (using contours): {pct_defect_pixels_contour}%')
     print(f'Number of defects in image: {number_of_defects}')
-    print(f'Coordinates for all defects: {defect_coors}')
-    print(f'Smallest defect size (in pixels): {smallest_defect_size}')
+    print('Coordinates and sizes for all defects (from largest to smallest):')
+    for i in range(len(defect_pixel_array_sorted)):
+        print(f'Defect at location {defect_coors_sorted[i]} with size of {defect_pixel_array_sorted[i]}')
     print(f'Largest defect size (in pixels): {largest_defect_size}')
+    print(f'Smallest defect size (in pixels): {smallest_defect_size}')
 
 
 # This controls what image to generate statistics of based on user input.
@@ -97,50 +108,3 @@ while always:
             print('That is an invalid image name.\n')
     else:
         print('That is an invalid magnification size.\n')
-
-# TODO: Delete this code whenever necessary
-# Old code that may be useful in the future
-
-# def get_adjacent_defect_pixels(row, column, num_rows, num_columns, defect_pixel_marker, adjacent_defect_pixels):
-#     if row > 0 and defect_pixel_marker[row - 1][column] == 0:
-#         defect_pixel_marker[row - 1][column] = 1
-#         adjacent_defect_pixels.append([row - 1, column])
-#     if row + 1 < num_rows and defect_pixel_marker[row + 1][column] == 0:
-#         defect_pixel_marker[row + 1][column] = 1
-#         adjacent_defect_pixels.append([row + 1, column])
-#     if column > 0 and defect_pixel_marker[row][column - 1] == 0:
-#         defect_pixel_marker[row][column - 1] = 1
-#         adjacent_defect_pixels.append([row, column - 1])
-#     if column + 1 < num_columns and defect_pixel_marker[row][column + 1] == 0:
-#         defect_pixel_marker[row][column + 1] = 1
-#         adjacent_defect_pixels.append([row, column + 1])
-#
-#     adjacent_defect_pixels.pop(0)
-#
-#     if defect_pixel_marker.count() == 0:
-#         return
-#     else:
-#         for [row, column] in adjacent_defect_pixels:
-#             get_adjacent_defect_pixels(row, column, num_rows, num_columns,
-#                                        defect_pixel_marker, adjacent_defect_pixels)
-
-# numrows = len(processed_image_data)
-# numcolumns = len(processed_image_data[0])
-
-# defect_pixel_marker = [[0] * numrows for _ in range(numcolumns)]  # defect pixel marked (0 is hasn't seen before,
-# 1 is has seen and is defect)
-# defect_counter = 0
-
-# for row in processed_image_data:
-#     for column in row:
-#         if (processed_image_data[row][column] == 0).all() and defect_pixel_marker[row][column] == 0:
-#             defect_pixel_marker[row][column] = 1
-#
-#             adjacent_defect_pixels = []
-#             get_adjacent_defect_pixels(row, column, numrows, numcolumns,
-#                                                                 defect_pixel_marker, adjacent_defect_pixels)
-#             defect_counter += 1
-#             if defect_counter == 1:
-#                 break
-#
-# print(f'Number of defects in image: {defect_counter}')
