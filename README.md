@@ -175,7 +175,9 @@ From the image, you can see a black bar covering half of the image, which shows 
 of the wafer. With the array method, it will count all pixels that are defective, regardless of edge or not, whereas
 the contour method will only count defective pixels based on the size of the defect itself. Therefore, the contour
 method's calculation of defective pixels, although slightly inaccurate from the previous image, are far more accurate
-than the array method's calculation of defective pixels in this case.
+than the array method's calculation of defective pixels in this case. Finally, I noticed that calculating all of these
+statistics took no more than 2 seconds of processing, even on a heavily defective wafer image such as case 2, proving
+how efficient the contour methods are.
 
 
 
