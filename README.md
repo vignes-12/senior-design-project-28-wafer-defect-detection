@@ -1,14 +1,25 @@
-# senior-design-project-28-wafer-defect-detection
+# Senior Design Project 28: Error Detection on Wafer Surfaces
 This project aims to process a 2D image taken from a microscope (and eventually from a 3D printer design wafer defect
-detecting system) in order to find all wafer defects and their corresponding locations. There are three Python scripts 
-located in this repository, which will be discussed individually below.
+detecting system) in order to find all wafer defects and their corresponding locations. In this repository, there are 
+three Python scripts and a dataset library, which will be discussed individually below.
 
+Disclaimer: Out of the five magnifications that wafer images were taken in, preprocessing did not work very well on 50X 
+and 100X magnification images, but works as expected on 5X, 10X, and 20X magnifications.
+
+# Repository organization
+
+## Dataset
+The dataset folder contains all images before and after preprocessing them. The clean directory contains images of a
+clean wafer. The defective directory contains all images that were taken without any processing, which are organized by
+magnification sizes in subdirectories. The processed directory is similarly organized to the defective directory, but
+have all images after processing them.
+
+## Code explanation
 The first script, preprocess_images.py, will convert wafer images located in the directory titled
 "defective" into a black and white image. This will occur by first converting the image into a grayscale format, 
 then removing the gradient and camera lens particles, which you can see in the directory titled "clean", and converting
 the image into a black and white format based on a predetermined threshold value. 
-Disclaimer: Preprocessing does not work very well for 50X and 100X magnification images, but works as expected on all 
-other magnifications.
+
 
 The second script, stats.py, will identify all wafer defects on said black and white image and then display 
 relevant statistics of the image on the console based on an image name provided by the user. There are currently two
@@ -29,25 +40,30 @@ called a Convolutional Neural Network. However, since this is one of the last pr
 currently in active development; rather, it will be worked on once we are able to generate all relevant statistics
 discussed above.
 
+# Future goals of project
 Future goals of this project are to stitch images of a single magnification together to create an overall wafer image
 before starting to preprocess and generate the statistics of said image.
 
+# Results
 Below is an image of a clean wafer, which shows the image distortion coming from the camera lens and color gradient,
-as well as three cases of sample wafer defects. Each of the defective images will show the original image, the image after
-preprocessing, and the statistics generated of that image after preprocessing them. 
+as well as three cases of sample wafer defects. Each of the defective images will show the original image, the image 
+after preprocessing (with and without a coordinate grid), and the statistics generated of that image. 
 
-# Clean wafer image
+## Clean wafer image
 ![10X_CLEAN](dataset/clean/10X/10X_CLEAN.jpg)
 
-# First case: Center image (less defects)
+## First case: Center image (less defects)
 
-# Defective wafer before processing image
+### Defective wafer before processing image
 ![OX9 quadrant3 20X take1](dataset/defective/20X/OX9%20quadrant3%2020X%20take1.jpg)
 
-# Defective wafer after processing image
+### Defective wafer after processing image (without coordinate grid)
 ![OX9 quadrant3 20X take1](dataset/processed/20X/OX9%20quadrant3%2020X%20take1.jpg)
 
-# Console output
+### Defective wafer after processing image (with coordinate grid)
+![OX9 quadrant3 20X take1](dataset/processed-with-grid/20X/OX9 quadrant3 20x take1.jpg)
+
+### Console output
 ```
 Welcome to the wafer image defect statistical generator!
 What image magnification would you like to see statistics of? (5X, 10X, 20X)
@@ -76,15 +92,18 @@ Total time: 0.77 seconds
 Exit? (Y/N)
 y
 ```
-# Second case: Center image (more defects)
+## Second case: Center image (more defects)
 
-# Defective wafer before processing image
+### Defective wafer before processing image
 ![5X_PARTICLE6](dataset/defective/5X/5X_PARTICLE6.jpg)
 
-# Defective wafer after processing image
+### Defective wafer after processing image
 ![5X_PARTICLE6](dataset/processed/5X/5X_PARTICLE6.jpg)
 
-# Console output
+### Defective wafer after processing image (with coordinate grid)
+![5X_PARTICLE6](dataset/processed-with-grid/5X/5X_PARTICLE6.jpg)
+
+### Console output
 ```
 Welcome to the wafer image defect statistical generator!
 What image magnification would you like to see statistics of? (5X, 10X, 20X)
@@ -243,15 +262,18 @@ Exit? (Y/N)
 y
 ```
 
-# Third case: Edge image
+## Third case: Edge image
 
-# Defective wafer before processing image
+### Defective wafer before processing image
 ![5X_BOTEDGE.jpg](dataset/defective/5X/5X_BOTEDGE.jpg)
 
-# Defective wafer after processing image
+### Defective wafer after processing image
 ![5X_BOTEDGE.jpg](dataset/processed/5X/5X_BOTEDGE.jpg)
 
-# Console output
+### Defective wafer after processing image (with coordinate grid)
+![5X_BOTEDGE.jpg](dataset/processed-with-grid/5X/5X_BOTEDGE.jpg)
+
+### Console output
 ```
 Welcome to the wafer image defect statistical generator!
 What image magnification would you like to see statistics of? (5X, 10X, 20X)
@@ -302,19 +324,18 @@ Exit? (Y/N)
 y
 ```
 
-# Results
+## Results Summary
 The preprocessing between both images worked fairly well. It was able to grab almost all noticeable defects into a black
 and white image. From the image statistics, though, there seems to be a much bigger story to tell. In the first case,
 it seems like both methods were comparable in counting defect pixels, since there was only a 2.78% difference in pixel
 count. The number of defects is also accurate at 4, as well as their corresponding locations. 
 
-In the second case,
-though, the two different methods have captured somewhat different data between the number of defective pixels in the
-image. The number of defective pixels in the contour method is about 20,000 more than the array method, representing a
-whopping 36.07% difference between the two methods. Moreover, although it would be a massively tedious task to count
-all defects on the image, I do believe that the contour method is working somewhat correctly, as it has detected over
-100 different defects. This proves how the contour method does have some flaws over the array method in terms of
-counting defective pixels. 
+In the second case, though, the two different methods have captured somewhat different data between the number of 
+defective pixels in the image. The number of defective pixels in the contour method is about 20,000 more than the 
+array method, representing a staggering 36.07% difference between the two methods. Moreover, although it would be a 
+massively tedious task to count all defects on the image, I do believe that the contour method is working somewhat 
+correctly, as it has detected over 100 different defects. This proves how the contour method does have some flaws 
+over the array method in terms of counting defective pixels. 
 
 Finally, the third case shows how useful the contour method can be over the array method. From the image, you can see 
 a black bar covering half of the image, which shows that the image was taken near an edge of the wafer. With the array 
