@@ -83,7 +83,7 @@ def generate_statistics():
     print(f'Number of defects in image: {number_of_defects}')
     print('Coordinates and sizes for all defects (from largest to smallest):')
     for i in range(len(defect_pixel_array_sorted)):
-        print(f'Defect at location {defect_coors_sorted[i]} with size of {defect_pixel_array_sorted[i]}')
+        print(f'#{i + 1}: Defect at location {defect_coors_sorted[i]} with size of {defect_pixel_array_sorted[i]}')
     print(f'Largest defect size (in pixels): {largest_defect_size}')
     print(f'Smallest defect size (in pixels): {smallest_defect_size}')
 
