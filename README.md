@@ -60,18 +60,18 @@ as well as three cases of sample wafer defects. Each of the defective images wil
 after preprocessing (with and without a coordinate grid), and the statistics generated of that image. 
 
 ## Clean wafer image
-![10X_CLEAN](dataset/clean/10X/10X_CLEAN.jpg)
+![10X_CLEAN](software/data-processing/dataset/clean/10X/10X_CLEAN.jpg)
 
 ## First case: Center image (less defects)
 
 ### Defective wafer before processing image
-![OX9 quadrant3 20X take1](dataset/defective/20X/OX9%20quadrant3%2020X%20take1.jpg)
+![OX9 quadrant3 20X take1](software/data-processing/dataset/defective/20X/OX9%20quadrant3%2020X%20take1.jpg)
 
 ### Defective wafer after processing image (without coordinate grid)
-![OX9 quadrant3 20X take1](dataset/processed/20X/OX9%20quadrant3%2020X%20take1.jpg)
+![OX9 quadrant3 20X take1](software/data-processing/dataset/processed/20X/OX9%20quadrant3%2020X%20take1.jpg)
 
 ### Defective wafer after processing image (with coordinate grid)
-![OX9 quadrant3 20X take1](dataset/processed-with-grid/20X/OX9%20quadrant3%2020X%20take1.jpg)
+![OX9 quadrant3 20X take1](software/data-processing/dataset/processed-with-grid/20X/OX9%20quadrant3%2020X%20take1.jpg)
 
 ### Console output
 ```
@@ -105,13 +105,13 @@ y
 ## Second case: Center image (more defects)
 
 ### Defective wafer before processing image
-![5X_PARTICLE6](dataset/defective/5X/5X_PARTICLE6.jpg)
+![5X_PARTICLE6](software/data-processing/dataset/defective/5X/5X_PARTICLE6.jpg)
 
 ### Defective wafer after processing image
-![5X_PARTICLE6](dataset/processed/5X/5X_PARTICLE6.jpg)
+![5X_PARTICLE6](software/data-processing/dataset/processed/5X/5X_PARTICLE6.jpg)
 
 ### Defective wafer after processing image (with coordinate grid)
-![5X_PARTICLE6](dataset/processed-with-grid/5X/5X_PARTICLE6.jpg)
+![5X_PARTICLE6](software/data-processing/dataset/processed-with-grid/5X/5X_PARTICLE6.jpg)
 
 ### Console output
 ```
@@ -275,13 +275,13 @@ y
 ## Third case: Edge image
 
 ### Defective wafer before processing image
-![5X_BOTEDGE.jpg](dataset/defective/5X/5X_BOTEDGE.jpg)
+![5X_BOTEDGE.jpg](software/data-processing/dataset/defective/5X/5X_BOTEDGE.jpg)
 
 ### Defective wafer after processing image
-![5X_BOTEDGE.jpg](dataset/processed/5X/5X_BOTEDGE.jpg)
+![5X_BOTEDGE.jpg](software/data-processing/dataset/processed/5X/5X_BOTEDGE.jpg)
 
 ### Defective wafer after processing image (with coordinate grid)
-![5X_BOTEDGE.jpg](dataset/processed-with-grid/5X/5X_BOTEDGE.jpg)
+![5X_BOTEDGE.jpg](software/data-processing/dataset/processed-with-grid/5X/5X_BOTEDGE.jpg)
 
 ### Console output
 ```
