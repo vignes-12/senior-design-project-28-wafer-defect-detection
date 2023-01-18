@@ -68,10 +68,10 @@ after preprocessing (with and without a coordinate grid), and the statistics gen
 ![OX9 quadrant3 20X take1](software/data-processing/dataset/defective/20X/OX9%20quadrant3%2020X%20take1.jpg)
 
 ### Defective wafer after processing image (without coordinate grid)
-![OX9 quadrant3 20X take1](software/data-processing/dataset/processed/20X/OX9 quadrant3 20X take1.jpg)
+![OX9 quadrant3 20X take1](software/data-processing/dataset/processed/20X/OX9%20quadrant3%2020X%20take1.jpg)
 
 ### Defective wafer after processing image (with coordinate grid)
-![OX9 quadrant3 20X take1](software/data-processing/dataset/processed-with-grid/20X/OX9 quadrant3 20X take1.jpg)
+![OX9 quadrant3 20X take1](software/data-processing/dataset/processed-with-grid/20X/OX9%20quadrant3%2020X%20take1.jpg)
 
 ### Console output
 ```
