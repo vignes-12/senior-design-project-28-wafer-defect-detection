@@ -65,13 +65,31 @@ after preprocessing (with and without a coordinate grid), and the statistics gen
 ## First case: Center image (less defects)
 
 ### Defective wafer before processing image
+<<<<<<< HEAD
 ![OX9 quadrant3 20X take1](software/data-processing/dataset/defective/20X/OX9 quadrant3 20X take1.jpg)
+||||||| 803e689
+![OX9 quadrant3 20X take1](dataset/defective/20X/OX9%20quadrant3%2020X%20take1.jpg)
+=======
+![OX9 quadrant3 20X take1](software/data-processing/dataset/defective/20X/OX9%20quadrant3%2020X%20take1.jpg)
+>>>>>>> 8d258df0c423269066c48a95d225159fb0100480
 
 ### Defective wafer after processing image (without coordinate grid)
+<<<<<<< HEAD
 ![OX9 quadrant3 20X take1](software/data-processing/dataset/processed/20X/OX9 quadrant3 20X take1.jpg)
+||||||| 803e689
+![OX9 quadrant3 20X take1](dataset/processed/20X/OX9%20quadrant3%2020X%20take1.jpg)
+=======
+![OX9 quadrant3 20X take1](software/data-processing/dataset/processed/20X/OX9%20quadrant3%2020X%20take1.jpg)
+>>>>>>> 8d258df0c423269066c48a95d225159fb0100480
 
 ### Defective wafer after processing image (with coordinate grid)
+<<<<<<< HEAD
 ![OX9 quadrant3 20X take1](software/data-processing/dataset/processed-with-grid/20X/OX9 quadrant3 20X take1.jpg)
+||||||| 803e689
+![OX9 quadrant3 20X take1](dataset/processed-with-grid/20X/OX9%20quadrant3%2020X%20take1.jpg)
+=======
+![OX9 quadrant3 20X take1](software/data-processing/dataset/processed-with-grid/20X/OX9%20quadrant3%2020X%20take1.jpg)
+>>>>>>> 8d258df0c423269066c48a95d225159fb0100480
 
 ### Console output
 ```

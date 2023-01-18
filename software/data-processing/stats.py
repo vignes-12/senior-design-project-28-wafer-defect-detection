@@ -7,7 +7,7 @@ import numpy as np
 print("Welcome to the wafer image defect statistical generator!")
 
 LENS_SIZES = ["5X", "10X", "20X"]
-PROCESSED_DATADIR = "C:/senior-design/dataset/processed"
+PROCESSED_DATADIR = "C:/senior-design/software/data-processing/dataset/processed"
 
 always = True
 
