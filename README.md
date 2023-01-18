@@ -1,25 +1,33 @@
 # Senior Design Project 28: Error Detection on Wafer Surfaces
 This project aims to process a 2D image taken from a microscope (and eventually from a 3D printer design wafer defect
-detecting system) in order to find all wafer defects and their corresponding locations. In this repository, there are 
-three Python scripts and a dataset library, which will be discussed individually below.
+detecting system) in order to find all wafer defects and their corresponding locations. In this repository, there are
+two folders, hardware and software, which categorize each aspect of the project and will be described below.
 
 Disclaimer: Out of the five magnifications that wafer images were taken in, preprocessing did not work very well on 50X 
 and 100X magnification images, but works as expected on 5X, 10X, and 20X magnifications.
 
 # Repository organization
+## Hardware
+This folder contains all of the hardware aspects of the senior design project, including driver modifications, embedded
+system programming, and more. Currently, there is a zipped file containing the driver used for the 3D printer.
 
-## Dataset
+## Software
+This folder contains the data-processing folder, which contains the data processing algorithm and all of the images 
+captured to test the algorithm. There is also a user-interface folder, which contains the user interface model designed 
+for the user to visibly see all wafer defects on a nearby monitor.
+
+### data-processing
+#### Dataset
 The dataset folder contains all images before and after preprocessing them. The clean directory contains images of a
 clean wafer. The defective directory contains all images that were taken without any processing, which are organized by
 magnification sizes in subdirectories. The processed directory is similarly organized to the defective directory, but
 have all images after processing them.
 
-## Code explanation
+### Code explanation
 The first script, preprocess_images.py, will convert wafer images located in the directory titled
 "defective" into a black and white image. This will occur by first converting the image into a grayscale format, 
 then removing the gradient and camera lens particles, which you can see in the directory titled "clean", and converting
 the image into a black and white format based on a predetermined threshold value. 
-
 
 The second script, stats.py, will identify all wafer defects on said black and white image and then display 
 relevant statistics of the image on the console based on an image name provided by the user. There are currently two
@@ -45,23 +53,25 @@ Future goals of this project are to stitch images of a single magnification toge
 before starting to preprocess and generate the statistics of said image.
 
 # Results
+# data-processing
+
 Below is an image of a clean wafer, which shows the image distortion coming from the camera lens and color gradient,
 as well as three cases of sample wafer defects. Each of the defective images will show the original image, the image 
 after preprocessing (with and without a coordinate grid), and the statistics generated of that image. 
 
 ## Clean wafer image
-![10X_CLEAN](dataset/clean/10X/10X_CLEAN.jpg)
+![10X_CLEAN](software/data-processing/dataset/clean/10X/10X_CLEAN.jpg)
 
 ## First case: Center image (less defects)
 
 ### Defective wafer before processing image
-![OX9 quadrant3 20X take1](dataset/defective/20X/OX9%20quadrant3%2020X%20take1.jpg)
+![OX9 quadrant3 20X take1](software/data-processing/dataset/defective/20X/OX9 quadrant3 20X take1.jpg)
 
 ### Defective wafer after processing image (without coordinate grid)
-![OX9 quadrant3 20X take1](dataset/processed/20X/OX9%20quadrant3%2020X%20take1.jpg)
+![OX9 quadrant3 20X take1](software/data-processing/dataset/processed/20X/OX9 quadrant3 20X take1.jpg)
 
 ### Defective wafer after processing image (with coordinate grid)
-![OX9 quadrant3 20X take1](dataset/processed-with-grid/20X/OX9%20quadrant3%2020X%20take1.jpg)
+![OX9 quadrant3 20X take1](software/data-processing/dataset/processed-with-grid/20X/OX9 quadrant3 20X take1.jpg)
 
 ### Console output
 ```
@@ -95,13 +105,13 @@ y
 ## Second case: Center image (more defects)
 
 ### Defective wafer before processing image
-![5X_PARTICLE6](dataset/defective/5X/5X_PARTICLE6.jpg)
+![5X_PARTICLE6](software/data-processing/dataset/defective/5X/5X_PARTICLE6.jpg)
 
 ### Defective wafer after processing image
-![5X_PARTICLE6](dataset/processed/5X/5X_PARTICLE6.jpg)
+![5X_PARTICLE6](software/data-processing/dataset/processed/5X/5X_PARTICLE6.jpg)
 
 ### Defective wafer after processing image (with coordinate grid)
-![5X_PARTICLE6](dataset/processed-with-grid/5X/5X_PARTICLE6.jpg)
+![5X_PARTICLE6](software/data-processing/dataset/processed-with-grid/5X/5X_PARTICLE6.jpg)
 
 ### Console output
 ```
@@ -265,13 +275,13 @@ y
 ## Third case: Edge image
 
 ### Defective wafer before processing image
-![5X_BOTEDGE.jpg](dataset/defective/5X/5X_BOTEDGE.jpg)
+![5X_BOTEDGE.jpg](software/data-processing/dataset/defective/5X/5X_BOTEDGE.jpg)
 
 ### Defective wafer after processing image
-![5X_BOTEDGE.jpg](dataset/processed/5X/5X_BOTEDGE.jpg)
+![5X_BOTEDGE.jpg](software/data-processing/dataset/processed/5X/5X_BOTEDGE.jpg)
 
 ### Defective wafer after processing image (with coordinate grid)
-![5X_BOTEDGE.jpg](dataset/processed-with-grid/5X/5X_BOTEDGE.jpg)
+![5X_BOTEDGE.jpg](software/data-processing/dataset/processed-with-grid/5X/5X_BOTEDGE.jpg)
 
 ### Console output
 ```
