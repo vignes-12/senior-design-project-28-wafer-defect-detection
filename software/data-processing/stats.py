@@ -3,11 +3,13 @@ import cv2
 import time
 import matplotlib.pyplot as plt
 import numpy as np
+import csv
 
 print("Welcome to the wafer image defect statistical generator!")
 
 LENS_SIZES = ["5X", "10X", "20X"]
-PROCESSED_DATADIR = "C:/senior-design/software/data-processing/dataset/processed"
+DATASET_DATADIR = "C:/senior-design/software/data-processing/dataset"
+PROCESSED_DATADIR = os.path.join(DATASET_DATADIR, "processed")
 
 always = True
 
@@ -45,6 +47,8 @@ def generate_statistics():
             defects.append(count)
 
     defect_pixel_counter_array = np.sum(processed_image_data == 0)  # counts number of defect pixels in image in array
+    x_length = len(processed_image_data)
+    y_length = len(processed_image_data[0])
     pixel_counter = sum(len(row) for row in processed_image_data)  # counts total number of pixels in image
     # calculates percentage of defect pixels in array and contour respectively
     pct_defect_pixels_array = round(defect_pixel_counter_array / pixel_counter * 100, 2)
@@ -72,20 +76,60 @@ def generate_statistics():
     defect_pixel_array_sorted = defect_sizes_nparray[sort][::-1]
     defect_coors_sorted = defect_coors_nparray[sort][::-1]
 
+    defect_coors_and_size = np.hstack((defect_coors_sorted,
+                                       np.atleast_2d(defect_pixel_array_sorted).T))
+
     # Prints all relevant statistics below
-    print(f'Number of pixels in image: {pixel_counter}')
-    print(f'Number of defect pixels in image (in array itself): {defect_pixel_counter_array}')
-    print(f'Number of defect pixels in image (using contours): {defect_pixel_counter_contour}')
-    print(
-        f'Percent error between defect pixels in array and contours: {pct_error_in_defect_pixels}%')
-    print(f'Percentage of defect pixels in image (in array itself): {pct_defect_pixels_array}%')
-    print(f'Percentage of defect pixels in image (using contours): {pct_defect_pixels_contour}%')
+    print(f'Length of image: {x_length}')
+    print(f'Width of image: {y_length}')
+    # print(f'Number of pixels in image: {pixel_counter}')
+    # print(f'Number of defect pixels in image (in array itself): {defect_pixel_counter_array}')
+    # print(f'Number of defect pixels in image (using contours): {defect_pixel_counter_contour}')
+    # print(
+    #     f'Percent error between defect pixels in array and contours: {pct_error_in_defect_pixels}%')
+    # print(f'Percentage of defect pixels in image (in array itself): {pct_defect_pixels_array}%')
+    # print(f'Percentage of defect pixels in image (using contours): {pct_defect_pixels_contour}%')
     print(f'Number of defects in image: {number_of_defects}')
     print('Coordinates and sizes for all defects (from largest to smallest):')
     for i in range(len(defect_pixel_array_sorted)):
         print(f'#{i + 1}: Defect at location {defect_coors_sorted[i]} with size of {defect_pixel_array_sorted[i]}')
     print(f'Largest defect size (in pixels): {largest_defect_size}')
     print(f'Smallest defect size (in pixels): {smallest_defect_size}')
+
+    # Outputs data to CSV
+    # Headers for CSV file
+    csv_defect_headers = ['x', 'y', 'size']
+    csv_overall_headers = ['X', 'Y', '#']
+    overall_stats = [str(x_length), str(y_length), str(number_of_defects)]
+
+    # Gets the output data path
+    output_path = os.path.join(DATASET_DATADIR, "output-data")
+    output_path_with_mag = os.path.join(output_path, magnification)
+
+    output_data_path = os.path.join(output_path_with_mag, image_name)
+    output_data_dupe_path = ""
+
+    is_output_dupe = False  # Flag for checking if output is a duplicate copy
+
+    if os.path.exists(output_data_path + ".csv"):   # If the file exists, increment a counter to find a file that
+        is_output_dupe = True                       # does not exist
+        counter = 1
+        output_data_dupe_path = (output_data_path + "_{}").format(str(counter))
+        while os.path.exists(output_data_dupe_path + ".csv"):
+            counter += 1
+            output_data_dupe_path = (output_data_path + "_{}").format(str(counter))
+
+    if not is_output_dupe:                          # Gets the name for the file
+        final_output_data_path = output_data_path + ".csv"
+    else:
+        final_output_data_path = output_data_dupe_path + ".csv"
+
+    with open(final_output_data_path, 'w') as csvfile:  # Writes the headers and statistics to the file
+        csvwriter = csv.writer(csvfile)
+        csvwriter.writerow(csv_overall_headers)
+        csvwriter.writerow(overall_stats)
+        csvwriter.writerow(csv_defect_headers)
+        csvwriter.writerows(defect_coors_and_size)
 
 
 # This controls what image to generate statistics of based on user input.
@@ -95,7 +139,7 @@ while always:
         print(f'You entered a magnification of {magnification}.')
         lens_path = os.path.join(PROCESSED_DATADIR, magnification)
         image_name = input('What image would you like to generate statistics of?\n').upper()
-        image_path = os.path.join(lens_path, image_name)
+        image_path = os.path.join(lens_path, image_name + ".jpg")
         if os.path.exists(image_path):
             start_time = time.time()  # Calculates time of statistical analysis and displays it to console
             generate_statistics()

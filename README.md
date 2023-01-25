@@ -8,7 +8,7 @@ and 100X magnification images, but works as expected on 5X, 10X, and 20X magnifi
 
 # Repository organization
 ## Hardware
-This folder contains all of the hardware aspects of the senior design project, including driver modifications, embedded
+This folder contains all the hardware aspects of the senior design project, including driver modifications, embedded
 system programming, and more. Currently, there is a zipped file containing the driver used for the 3D printer.
 
 ## Software
@@ -30,18 +30,21 @@ then removing the gradient and camera lens particles, which you can see in the d
 the image into a black and white format based on a predetermined threshold value. 
 
 The second script, stats.py, will identify all wafer defects on said black and white image and then display 
-relevant statistics of the image on the console based on an image name provided by the user. There are currently two
-different methods to generate these statistics. One of them is simply by counting the pixels within the array to
-identify whether it is a defect or clean. However, this method will not take into account the edges of the defect, since
-those are also black but not a wafer defect. To fix that issue, I am using the findContours() method found in the
-opencv-python library, which will connect defective pixels together to form singular defects. This method also poses its
-own problems, though. Although it does not count edges as actually defective, due to the minimum and maximum size 
-limitations that I have given to identify whether a region is considered a defect or not, it tends to create more 
-defective pixels in order to smooth defects together, particularly those that are oddly-shaped or joined together.
-However, finding contours of an image is definitely a worthwhile means of generating statistics of the image on a 
-per-defect basis, such as counting all defects, finding where the coordinates and sizes of all defects are and sorting
-them from biggest to largest, and getting the smallest and largest defect size. I will present the pros and cons of 
-both methods in three cases of defect images below.
+relevant statistics of the image on the console as well based on an image name provided by the user. It will also
+output the statistics to a CSV file so that it is more accessible to see as well as send to the user interface.
+
+There are currently two different methods to generate these statistics. One of them is simply by counting the pixels 
+within the array to identify whether it is a defect or clean. However, this method will not take into account the edges 
+of the defect, since those are also black but not a wafer defect. To fix that issue, I am using the findContours() 
+method found in the opencv-python library, which will connect defective pixels together to form singular defects. 
+
+This method also poses its own problems, though. Although it does not count edges as actually defective, due to the 
+minimum and maximum size limitations that I have given to identify whether a region is considered a defect or not, it 
+tends to create more defective pixels in order to smooth defects together, particularly those that are oddly-shaped or 
+joined together. However, finding contours of an image is definitely a worthwhile means of generating statistics of the 
+image on a per-defect basis, such as counting all defects, finding where the coordinates and sizes of all defects are
+and sorting them from biggest to largest, and getting the smallest and largest defect size. I will present the pros and 
+cons of both methods in three cases of defect images below.
 
 The last script, cnn.py, is currently in work-in-progress. It aims to classify wafer defects based on a neural network
 called a Convolutional Neural Network. However, since this is one of the last priorities of the project, this is not
@@ -57,7 +60,9 @@ before starting to preprocess and generate the statistics of said image.
 
 Below is an image of a clean wafer, which shows the image distortion coming from the camera lens and color gradient,
 as well as three cases of sample wafer defects. Each of the defective images will show the original image, the image 
-after preprocessing (with and without a coordinate grid), and the statistics generated of that image. 
+after preprocessing (with and without a coordinate grid), and the statistics generated of that image. You can also view
+the relevant CSV output file for the images presented in this README by going to the dataset/output-data/XX/*.csv file,
+where XX refers to the magnification.
 
 ## Clean wafer image
 ![10X_CLEAN](software/data-processing/dataset/clean/10X/10X_CLEAN.jpg)
