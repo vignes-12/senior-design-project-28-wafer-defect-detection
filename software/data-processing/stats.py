@@ -47,8 +47,8 @@ def generate_statistics():
             defects.append(count)
 
     defect_pixel_counter_array = np.sum(processed_image_data == 0)  # counts number of defect pixels in image in array
-    x_length = len(processed_image_data)
-    y_length = len(processed_image_data[0])
+    y_length = len(processed_image_data)
+    x_length = len(processed_image_data[0])
     pixel_counter = sum(len(row) for row in processed_image_data)  # counts total number of pixels in image
     # calculates percentage of defect pixels in array and contour respectively
     pct_defect_pixels_array = round(defect_pixel_counter_array / pixel_counter * 100, 2)
