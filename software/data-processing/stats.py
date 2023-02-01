@@ -14,7 +14,7 @@ PROCESSED_DATADIR = os.path.join(DATASET_DATADIR, "processed")
 always = True
 
 
-def generate_statistics():
+def generate_statistics(all_def_coor):
     print(f'\nGenerating statistics of {image_name}...\n')
 
     processed_image_data = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
@@ -23,6 +23,11 @@ def generate_statistics():
     plt.title(image_name)
     plt.grid(True, color='black')
     plt.show()
+
+    y_length = len(processed_image_data)
+    x_length = len(processed_image_data[0])
+
+    all_defective_coordinates = []
 
     # Generates pixel array based on a threshold value
     th, threshed = cv2.threshold(processed_image_data, 225, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
@@ -47,8 +52,6 @@ def generate_statistics():
             defects.append(count)
 
     defect_pixel_counter_array = np.sum(processed_image_data == 0)  # counts number of defect pixels in image in array
-    y_length = len(processed_image_data)
-    x_length = len(processed_image_data[0])
     pixel_counter = sum(len(row) for row in processed_image_data)  # counts total number of pixels in image
     # calculates percentage of defect pixels in array and contour respectively
     pct_defect_pixels_array = round(defect_pixel_counter_array / pixel_counter * 100, 2)
@@ -60,11 +63,16 @@ def generate_statistics():
     smallest_defect_size = round(min(defect_sizes))  # gets smallest defect size
     largest_defect_size = round(max(defect_sizes))  # gets largest defect size
 
+    defect_coors_and_size = []
+
     # Calculates the x and y coordinates for all defects
     for defect in defects:
         median_x_coordinate = round(sum(pixel[0][0] for pixel in defect) / len(defect))
         median_y_coordinate = round(sum(pixel[0][1] for pixel in defect) / len(defect))
         defect_coors.append([median_x_coordinate, median_y_coordinate])
+        if all_def_coor:
+            for pixel in defect:
+                defect_coors_and_size.append(pixel)
 
     # Converts the sizes and coordinates to NumPy arrays for sorting
     defect_sizes_nparray = np.array(defect_sizes)
@@ -76,8 +84,9 @@ def generate_statistics():
     defect_pixel_array_sorted = defect_sizes_nparray[sort][::-1]
     defect_coors_sorted = defect_coors_nparray[sort][::-1]
 
-    defect_coors_and_size = np.hstack((defect_coors_sorted,
-                                       np.atleast_2d(defect_pixel_array_sorted).T))
+    if not all_def_coor:
+        defect_coors_and_size = np.hstack((defect_coors_sorted,
+                                           np.atleast_2d(defect_pixel_array_sorted).T))
 
     # Prints all relevant statistics below
     print(f'Length of image: {x_length}')
@@ -99,6 +108,7 @@ def generate_statistics():
     # Outputs data to CSV
     # Headers for CSV file
     csv_defect_headers = ['x', 'y', 'size']
+    csv_defect_headers_all_def_coor = ['x', 'y']
     csv_overall_headers = ['X', 'Y', '#']
     overall_stats = [str(x_length), str(y_length), str(number_of_defects)]
 
@@ -106,7 +116,11 @@ def generate_statistics():
     output_path = os.path.join(DATASET_DATADIR, "output-data")
     output_path_with_mag = os.path.join(output_path, magnification)
 
-    output_data_path = os.path.join(output_path_with_mag, image_name)
+    if not all_def_coor:
+        output_data_path = os.path.join(output_path_with_mag, image_name)
+    else:
+        output_data_path = os.path.join(output_path_with_mag, image_name + "(all_def_coor)")
+
     output_data_dupe_path = ""
 
     is_output_dupe = False  # Flag for checking if output is a duplicate copy
@@ -124,11 +138,16 @@ def generate_statistics():
     else:
         final_output_data_path = output_data_dupe_path + ".csv"
 
+    print("\nStoring data in output file: '" + final_output_data_path + "'...\n")
+
     with open(final_output_data_path, 'w') as csvfile:  # Writes the headers and statistics to the file
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(csv_overall_headers)
         csvwriter.writerow(overall_stats)
-        csvwriter.writerow(csv_defect_headers)
+        if all_def_coor:
+            csvwriter.writerow(csv_defect_headers_all_def_coor)
+        else:
+            csvwriter.writerow(csv_defect_headers)
         csvwriter.writerows(defect_coors_and_size)
 
 
@@ -141,13 +160,23 @@ while always:
         image_name = input('What image would you like to generate statistics of?\n').upper()
         image_path = os.path.join(lens_path, image_name + ".jpg")
         if os.path.exists(image_path):
-            start_time = time.time()  # Calculates time of statistical analysis and displays it to console
-            generate_statistics()
-            end_time = time.time()
-            print(f'Total time: {round(end_time - start_time, 2)} seconds')
-            user_done = input('Exit? (Y/N)\n').upper()
-            if user_done == 'Y':
-                always = False
+            all_def_coor = input('Would you like all defective coordinates? (Y/N)\n').upper()
+            if all_def_coor == 'N':
+                start_time = time.time()  # Calculates time of statistical analysis and displays it to console
+                generate_statistics(False)
+                end_time = time.time()
+                print(f'Total time: {round(end_time - start_time, 2)} seconds')
+                user_done = input('Exit? (Y/N)\n').upper()
+                if user_done == 'Y':
+                    always = False
+            else:
+                start_time = time.time()  # Calculates time of statistical analysis and displays it to console
+                generate_statistics(True)
+                end_time = time.time()
+                print(f'Total time: {round(end_time - start_time, 2)} seconds')
+                user_done = input('Exit? (Y/N)\n').upper()
+                if user_done == 'Y':
+                    always = False
         else:
             print('That is an invalid image name.\n')
     else:
