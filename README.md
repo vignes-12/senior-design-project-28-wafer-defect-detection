@@ -84,6 +84,15 @@ Exit? (Y/N)
 y
 ```
 
+## Image 1 before stitching
+
+![5X](software/data-processing/dataset/processed/5X/5X.jpg)
+
+## Image 2 before stitching
+
+![5X_PARTICLE1](software/data-processing/dataset/processed/5X/5X_PARTICLE1.jpg)
+
+
 ## Stitched image
 
 ![stitched_1](software/data-processing/dataset/processed-stitched/stitched_1.jpg)
