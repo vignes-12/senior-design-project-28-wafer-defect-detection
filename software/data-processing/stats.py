@@ -15,6 +15,11 @@ always = True
 
 
 def generate_statistics(all_def_coor):
+    """
+    Generates and displays relevant statistics of a user-inputted image.
+    :param all_def_coor: Flag to show all defective coordinates or the center of all defects
+    :return: Nothing
+    """
     print(f'\nGenerating statistics of {image_name}...\n')
 
     processed_image_data = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)

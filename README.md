@@ -46,6 +46,11 @@ image on a per-defect basis, such as counting all defects, finding where the coo
 and sorting them from biggest to largest, and getting the smallest and largest defect size. I will present the pros and 
 cons of both methods in three cases of defect images below.
 
+The third script, stitch_images.py, is designed to stitch any two user-provided images together horizontally. It is just
+a simplistic version to test whether it works before moving on to stitch multiple images together both horizontally 
+and vertically. In the dataset folder, all unprocessed stitched images can be found in the "defective-stitched" 
+directory. Likewise, all processed stitched images can be found in the "processed-stitched" directory.
+
 The last script, cnn.py, is currently in work-in-progress. It aims to classify wafer defects based on a neural network
 called a Convolutional Neural Network. However, since this is one of the last priorities of the project, this is not
 currently in active development; rather, it will be worked on once we are able to generate all relevant statistics
@@ -57,7 +62,34 @@ before starting to preprocess and generate the statistics of said image.
 
 # Results
 # data-processing
+## Image stitching
 
+Below is a sample result of stitching images together to show the process on the console as well as the resulting
+stitched image.
+
+### Console output
+```
+What type of images would you like to stitch together (defective, processed)?
+processed
+You entered an image type of processed.
+What magnification would you like to stitch images of? (5X, 10X, 20X)
+5x
+You entered a magnification of 5X.
+What first image would you like to stitch together?
+5x
+What second image would you like to stitch together?
+5x_particle1
+Total time: 2.48 seconds
+Exit? (Y/N)
+y
+```
+
+## Stitched image
+
+![stitched_1](software/data-processing/dataset/processed-stitched/stitched_1.jpg)
+
+
+## Image processing
 Below is an image of a clean wafer, which shows the image distortion coming from the camera lens and color gradient,
 as well as three cases of sample wafer defects. Each of the defective images will show the original image, the image 
 after preprocessing (with and without a coordinate grid), and the statistics generated of that image. There are also
@@ -767,6 +799,10 @@ y
 
 ## Results Summary
 
+### data-processing
+
+#### Image processing
+
 *Disclaimer: This percentage differences were calculated using percent error methods that are not currently needed in 
 this project, so they have been commented out from the stats.py file, hence why you do not see them. The summary is 
 still completely factual, however.*
@@ -791,6 +827,15 @@ pixels, although slightly inaccurate from the previous image, are far more accur
 of defective pixels in this case. Finally, I noticed that calculating all of these statistics took no more than 2 
 seconds of processing, even on a heavily defective wafer image such as case 2, proving how efficient 
 the contour methods are.
+
+#### Image stitching
+
+The image stitching worked pretty well. It was able to stitch both images together and produce a lossless image. Next
+steps are to be able to stitch both vertically and horizontally of zoomed-in images to essentially make a collage of a
+bigger image before processing. We will need to find a way to offset each image by one to remove any overlapping with
+the other images so that there are no repeat defects on the image. From the console output, we can see that it took
+about 2.48 seconds to stitch two images together so with hundreds of images that need to be taken to stitch one wafer
+image together, it will take a very long time. We can try optimizing that time in the future as well.
 
 
 

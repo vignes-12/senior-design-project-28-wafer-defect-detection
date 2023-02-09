@@ -2,7 +2,7 @@ import os
 import cv2
 
 # Path to all layers
-DATADIR = "C:/senior-design/dataset"
+DATADIR = "C:/senior-design/software/data-processing/dataset"
 clean_src = "clean/10X/10X_CLEAN.jpg"
 
 # List of all lens sizes
@@ -11,6 +11,10 @@ LENS_SIZES = ["5X", "10X", "20X"]  # 50X and 100X magnifications are not process
 
 # Function to create training data
 def process_image_data():
+    """
+    Processes all images stored in the defective directory and its subdirectories
+    :return: Nothing
+    """
     clean_img_array = cv2.imread(os.path.join(DATADIR, clean_src), cv2.IMREAD_GRAYSCALE)
     path = os.path.join(DATADIR, "defective")  # gets path of each category
     processed_path = os.path.join(DATADIR, "processed")  # gets path of processed images
