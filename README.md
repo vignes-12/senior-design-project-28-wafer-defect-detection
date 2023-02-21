@@ -86,16 +86,45 @@ y
 
 ## Image 1 before stitching
 
-![5X](software/data-processing/dataset/processed/5X/5X.jpg)
+![5X_PARTICLE5](software/data-processing/dataset/processed/5X/5X_PARTICLE5.jpg)
 
 ## Image 2 before stitching
 
-![5X_PARTICLE1](software/data-processing/dataset/processed/5X/5X_PARTICLE1.jpg)
+![5X_PARTICLE6](software/data-processing/dataset/processed/5X/5X_PARTICLE6.jpg)
 
+## Image 3 before stitching
+
+![5X_PARTICLE7](software/data-processing/dataset/processed/5X/5X_PARTICLE7.jpg)
 
 ## Stitched image
 
-![stitched_1](software/data-processing/dataset/processed-stitched/stitched_1.jpg)
+![stitched_7](software/data-processing/dataset/processed-stitched/STITCHED_7.jpg)
+
+## Console output
+
+```
+What type of images would you like to stitch together (defective, processed)?
+processed
+You entered an image type of processed.
+What magnification would you like to stitch images of? (5X, 10X, 20X)
+5x
+You entered a magnification of 5X.
+What first image would you like to stitch together?
+5x_particle5
+What second image would you like to stitch together?
+5x_particle6
+Would you like to continue stitching images? (Y/N)
+y
+What other image would you like to stitch together?
+5x_particle7
+Would you like to continue stitching images? (Y/N)
+n
+What name would you like to give this image?
+stitched
+There are 7 duplicate image(s) with the same name already saved. Renaming to STITCHED_7.jpg
+Exit? (Y/N)
+y
+```
 
 
 ## Image processing
