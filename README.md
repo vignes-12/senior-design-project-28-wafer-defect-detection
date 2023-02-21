@@ -46,10 +46,11 @@ image on a per-defect basis, such as counting all defects, finding where the coo
 and sorting them from biggest to largest, and getting the smallest and largest defect size. I will present the pros and 
 cons of both methods in three cases of defect images below.
 
-The third script, stitch_images.py, is designed to stitch any two user-provided images together horizontally. It is just
+The third script, stitch_images.py, is designed to stitch multiple user-provided images together horizontally. It is just
 a simplistic version to test whether it works before moving on to stitch multiple images together both horizontally 
 and vertically. In the dataset folder, all unprocessed stitched images can be found in the "defective-stitched" 
-directory. Likewise, all processed stitched images can be found in the "processed-stitched" directory.
+directory. Likewise, all processed stitched images can be found in the "processed-stitched" directory. The user can also
+define the resulting image name to save onto their local computer as well.
 
 The last script, cnn.py, is currently in work-in-progress. It aims to classify wafer defects based on a neural network
 called a Convolutional Neural Network. However, since this is one of the last priorities of the project, this is not
