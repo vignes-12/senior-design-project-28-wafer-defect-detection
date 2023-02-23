@@ -68,23 +68,6 @@ before starting to preprocess and generate the statistics of said image.
 Below is a sample result of stitching images together to show the process on the console as well as the resulting
 stitched image.
 
-### Console output
-```
-What type of images would you like to stitch together (defective, processed)?
-processed
-You entered an image type of processed.
-What magnification would you like to stitch images of? (5X, 10X, 20X)
-5x
-You entered a magnification of 5X.
-What first image would you like to stitch together?
-5x
-What second image would you like to stitch together?
-5x_particle1
-Total time: 2.48 seconds
-Exit? (Y/N)
-y
-```
-
 ## Image 1 before stitching
 
 ![5X_PARTICLE5](software/data-processing/dataset/processed/5X/5X_PARTICLE5.jpg)
