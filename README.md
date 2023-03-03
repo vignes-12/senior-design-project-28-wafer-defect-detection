@@ -52,6 +52,13 @@ and vertically. In the dataset folder, all unprocessed stitched images can be fo
 directory. Likewise, all processed stitched images can be found in the "processed-stitched" directory. The user can also
 define the resulting image name to save onto their local computer as well.
 
+The fourth script, stitch_images_snake.py, is designed to stitch images in a snake pattern given user-defined 
+lengths of widths of the final image in terms of the size of one image. Similar to how the wafer scanner will work, this
+will take up to the width times length images that are inserted into a directory under "processed-
+stitched-snake" of the user's choice and stitch them to produce a final image with a name of their choice, within the
+same directory. I have done this by taking each image from the corresponding image in the "processed" folder and pasting
+it in the directory of the user's choice (in this case, "test"). You can see a sample run of one stitched image below.
+
 The last script, cnn.py, is currently in work-in-progress. It aims to classify wafer defects based on a neural network
 called a Convolutional Neural Network. However, since this is one of the last priorities of the project, this is not
 currently in active development; rather, it will be worked on once we are able to generate all relevant statistics
@@ -63,6 +70,38 @@ before starting to preprocess and generate the statistics of said image.
 
 # Results
 # data-processing
+## Image stitching (snake pattern)
+This sample run was done in a directory called "test" under the "processed-stitched-snake" directory.
+
+## Image 1 before stitching
+![OX9 quadrant3 5X take2.jpg](software%2Fdata-processing%2Fdataset%2Fprocessed-stitched-snake%2Ftest%2FOX9%20quadrant3%205X%20take2.jpg)
+
+## Image 2 before stitching
+![OX9 quadrant3 5X take1.jpg](software%2Fdata-processing%2Fdataset%2Fprocessed-stitched-snake%2Ftest%2FOX9%20quadrant3%205X%20take1.jpg)
+
+## Image 3 before stitching
+![OX9 quadrant2 5X take 2.jpg](software%2Fdata-processing%2Fdataset%2Fprocessed-stitched-snake%2Ftest%2FOX9%20quadrant2%205X%20take%202.jpg)
+
+## Image 4 before stitching
+![OX9 quadrant2 5X take 1 .jpg](software%2Fdata-processing%2Fdataset%2Fprocessed-stitched-snake%2Ftest%2FOX9%20quadrant2%205X%20take%201%20.jpg)
+
+## Final stitched image
+![STITCHED.jpg](software%2Fdata-processing%2Fdataset%2Fprocessed-stitched-snake%2Ftest%2FSTITCHED.jpg)
+
+## Console output
+```
+Welcome to the stitch wafer image algorithm!
+What directory would you like to store all images for stitching into?test
+How many images horizontally will the final image be?2
+How many images vertically will the final image be?2
+New image #1 OX9 quadrant3 5X take2.jpg found. Stitching it now...
+New image #2 OX9 quadrant3 5X take1.jpg found. Stitching it now...
+New image #3 OX9 quadrant2 5X take 2.jpg found. Stitching it now...
+New image #4 OX9 quadrant2 5X take 1 .jpg found. Stitching it now...
+What would you like to call the final image name?stitched
+Exit? (Y/N)
+y
+```
 ## Image stitching
 
 Below is a sample result of stitching images together to show the process on the console as well as the resulting
