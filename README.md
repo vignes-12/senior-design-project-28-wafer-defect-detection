@@ -4,7 +4,8 @@ detecting system) in order to find all wafer defects and their corresponding loc
 two folders, hardware and software, which categorize each aspect of the project and will be described below.
 
 Disclaimer: Out of the five magnifications that wafer images were taken in, preprocessing did not work very well on 50X 
-and 100X magnification images, but works as expected on 5X, 10X, and 20X magnifications.
+and 100X magnification images, but works as expected on 5X, 10X, and 20X magnifications. (20X magnification images may
+be corrupted)
 
 # Repository organization
 ## Hardware
@@ -56,8 +57,11 @@ The fourth script, stitch_images_snake.py, is designed to stitch images in a sna
 lengths of widths of the final image in terms of the size of one image. Similar to how the wafer scanner will work, this
 will take up to the width times length images that are inserted into a directory under "processed-
 stitched-snake" of the user's choice and stitch them to produce a final image with a name of their choice, within the
-same directory. I have done this by taking each image from the corresponding image in the "processed" folder and pasting
-it in the directory of the user's choice (in this case, "test"). You can see a sample run of one stitched image below.
+same directory. I have also made it call a slightly-modified version of my stats.py file called stats_stitch.py which 
+generates statistics of that image and then saves it in a CSV file inside that folder. I have done this by taking each 
+image from the corresponding image in the "processed" folder and pasting it in the directory of the user's choice (in 
+this case, "test"). You can see a sample run of one stitched image below. There are other stitched images in their
+corresponding "test_X" directories as well. 
 
 The last script, cnn.py, is currently in work-in-progress. It aims to classify wafer defects based on a neural network
 called a Convolutional Neural Network. However, since this is one of the last priorities of the project, this is not
@@ -74,34 +78,278 @@ before starting to preprocess and generate the statistics of said image.
 This sample run was done in a directory called "test" under the "processed-stitched-snake" directory.
 
 ## Image 1 before stitching
-![OX9 quadrant3 5X take2.jpg](software%2Fdata-processing%2Fdataset%2Fprocessed-stitched-snake%2Ftest%2FOX9%20quadrant3%205X%20take2.jpg)
+![5X.jpg](software%2Fdata-processing%2Fdataset%2Fprocessed-stitched-snake%2Ftest%2F5X.jpg)
 
 ## Image 2 before stitching
-![OX9 quadrant3 5X take1.jpg](software%2Fdata-processing%2Fdataset%2Fprocessed-stitched-snake%2Ftest%2FOX9%20quadrant3%205X%20take1.jpg)
+![5X_PARTICLE2.jpg](software%2Fdata-processing%2Fdataset%2Fprocessed-stitched-snake%2Ftest%2F5X_PARTICLE2.jpg)
 
 ## Image 3 before stitching
-![OX9 quadrant2 5X take 2.jpg](software%2Fdata-processing%2Fdataset%2Fprocessed-stitched-snake%2Ftest%2FOX9%20quadrant2%205X%20take%202.jpg)
+![5X_PARTICLE5.jpg](software%2Fdata-processing%2Fdataset%2Fprocessed-stitched-snake%2Ftest%2F5X_PARTICLE5.jpg)
 
 ## Image 4 before stitching
-![OX9 quadrant2 5X take 1 .jpg](software%2Fdata-processing%2Fdataset%2Fprocessed-stitched-snake%2Ftest%2FOX9%20quadrant2%205X%20take%201%20.jpg)
+![5X_PARTICLE7.jpg](software%2Fdata-processing%2Fdataset%2Fprocessed-stitched-snake%2Ftest%2F5X_PARTICLE7.jpg)
 
 ## Final stitched image
-![STITCHED.jpg](software%2Fdata-processing%2Fdataset%2Fprocessed-stitched-snake%2Ftest%2FSTITCHED.jpg)
+![TEST.jpg](software%2Fdata-processing%2Fdataset%2Fprocessed-stitched-snake%2Ftest%2FTEST.jpg)
 
 ## Console output
 ```
+Welcome to the wafer image defect statistical generator!
 Welcome to the stitch wafer image algorithm!
 What directory would you like to store all images for stitching into?test
 How many images horizontally will the final image be?2
 How many images vertically will the final image be?2
-New image #1 OX9 quadrant3 5X take2.jpg found. Stitching it now...
-New image #2 OX9 quadrant3 5X take1.jpg found. Stitching it now...
-New image #3 OX9 quadrant2 5X take 2.jpg found. Stitching it now...
-New image #4 OX9 quadrant2 5X take 1 .jpg found. Stitching it now...
-What would you like to call the final image name?stitched
+New image #1 5X.jpg found. Stitching it now...
+New image #2 5X_PARTICLE2.jpg found. Stitching it now...
+New image #3 5X_PARTICLE5.jpg found. Stitching it now...
+New image #4 5X_PARTICLE7.jpg found. Stitching it now...
+What would you like to call the final image name?test
+
+Generating statistics of TEST...
+
+Length of image: 7312
+Width of image: 5480
+Number of defects in image: 110
+Coordinates and sizes for all defects (from largest to smallest):
+#1: Defect at location [6305 2976] with size of 2615
+#2: Defect at location [1487 1311] with size of 2390
+#3: Defect at location [4825 4411] with size of 1979
+#4: Defect at location [7091 4509] with size of 1749
+#5: Defect at location [6146  440] with size of 1336
+#6: Defect at location [4201 4849] with size of 1145
+#7: Defect at location [4157 4578] with size of 964
+#8: Defect at location [2238 4692] with size of 866
+#9: Defect at location [6912 2263] with size of 730
+#10: Defect at location [4226  941] with size of 556
+#11: Defect at location [3836 3474] with size of 488
+#12: Defect at location [4420 1469] with size of 486
+#13: Defect at location [3104 1414] with size of 431
+#14: Defect at location [4864 3920] with size of 406
+#15: Defect at location [1657 3532] with size of 374
+#16: Defect at location [2741 3304] with size of 372
+#17: Defect at location [5339 4416] with size of 366
+#18: Defect at location [3699 2211] with size of 328
+#19: Defect at location [6215 3653] with size of 320
+#20: Defect at location [3463  888] with size of 304
+#21: Defect at location [3724 4012] with size of 268
+#22: Defect at location [3781 2749] with size of 238
+#23: Defect at location [3666 1629] with size of 210
+#24: Defect at location [3789 4162] with size of 210
+#25: Defect at location [3754 2750] with size of 202
+#26: Defect at location [4571 4648] with size of 200
+#27: Defect at location [ 444 4216] with size of 198
+#28: Defect at location [3845 4019] with size of 197
+#29: Defect at location [501 495] with size of 184
+#30: Defect at location [2423 3574] with size of 178
+#31: Defect at location [3780 3871] with size of 174
+#32: Defect at location [4740 1487] with size of 172
+#33: Defect at location [  37 1456] with size of 169
+#34: Defect at location [3762 3416] with size of 164
+#35: Defect at location [4460 4713] with size of 142
+#36: Defect at location [4515 3826] with size of 138
+#37: Defect at location [5043 3241] with size of 126
+#38: Defect at location [2623 5137] with size of 123
+#39: Defect at location [ 821 1728] with size of 122
+#40: Defect at location [1376 1785] with size of 120
+#41: Defect at location [6440 2019] with size of 118
+#42: Defect at location [3320 2556] with size of 118
+#43: Defect at location [4028 4686] with size of 116
+#44: Defect at location [344 616] with size of 112
+#45: Defect at location [3689 3576] with size of 102
+#46: Defect at location [5800 3889] with size of 102
+#47: Defect at location [3781 5369] with size of 102
+#48: Defect at location [ 240 1444] with size of 102
+#49: Defect at location [1957  835] with size of 92
+#50: Defect at location [429 826] with size of 90
+#51: Defect at location [1846 1931] with size of 85
+#52: Defect at location [2631 1848] with size of 81
+#53: Defect at location [596 102] with size of 80
+#54: Defect at location [2249 3088] with size of 80
+#55: Defect at location [3818 3447] with size of 72
+#56: Defect at location [3675 3991] with size of 72
+#57: Defect at location [2360 1080] with size of 68
+#58: Defect at location [ 470 4720] with size of 67
+#59: Defect at location [ 391 3296] with size of 66
+#60: Defect at location [3749 4961] with size of 66
+#61: Defect at location [6401 1832] with size of 64
+#62: Defect at location [3732 5452] with size of 64
+#63: Defect at location [3709 3550] with size of 64
+#64: Defect at location [ 415 1222] with size of 63
+#65: Defect at location [ 460 2350] with size of 62
+#66: Defect at location [5454  292] with size of 61
+#67: Defect at location [1062 2395] with size of 56
+#68: Defect at location [1018  193] with size of 54
+#69: Defect at location [4981 1941] with size of 50
+#70: Defect at location [1748  820] with size of 48
+#71: Defect at location [ 855 2123] with size of 44
+#72: Defect at location [ 940 2458] with size of 44
+#73: Defect at location [1004  720] with size of 42
+#74: Defect at location [640 833] with size of 40
+#75: Defect at location [ 836 4125] with size of 40
+#76: Defect at location [1220 1737] with size of 40
+#77: Defect at location [1259 2648] with size of 40
+#78: Defect at location [3924 4234] with size of 38
+#79: Defect at location [4327 5334] with size of 37
+#80: Defect at location [ 808 2604] with size of 37
+#81: Defect at location [ 237 2178] with size of 36
+#82: Defect at location [3873 5067] with size of 35
+#83: Defect at location [619   6] with size of 34
+#84: Defect at location [ 100 5467] with size of 33
+#85: Defect at location [3727 2792] with size of 32
+#86: Defect at location [ 314 2211] with size of 32
+#87: Defect at location [1333 3568] with size of 32
+#88: Defect at location [1035 1539] with size of 30
+#89: Defect at location [ 934 3223] with size of 30
+#90: Defect at location [1421  601] with size of 30
+#91: Defect at location [1153 2339] with size of 30
+#92: Defect at location [872 711] with size of 30
+#93: Defect at location [4246 5361] with size of 28
+#94: Defect at location [5145  964] with size of 28
+#95: Defect at location [6598 1191] with size of 28
+#96: Defect at location [3742 2781] with size of 28
+#97: Defect at location [1099 1739] with size of 28
+#98: Defect at location [1581 3080] with size of 28
+#99: Defect at location [6134 2230] with size of 28
+#100: Defect at location [1184 4394] with size of 27
+#101: Defect at location [ 682 2882] with size of 27
+#102: Defect at location [5904 2335] with size of 26
+#103: Defect at location [4703 2438] with size of 26
+#104: Defect at location [5112 1265] with size of 24
+#105: Defect at location [ 527 1242] with size of 24
+#106: Defect at location [915 901] with size of 24
+#107: Defect at location [456 210] with size of 24
+#108: Defect at location [3662 4758] with size of 23
+#109: Defect at location [2087 1711] with size of 22
+#110: Defect at location [1762 1920] with size of 22
+Largest defect size (in pixels): 2615
+Smallest defect size (in pixels): 22
+
+Storing data in output file: 'C:\senior-design\software\data-processing\dataset\processed-stitched-snake\TEST\TEST.csv'...
+
 Exit? (Y/N)
 y
 ```
+
+## CSV Output
+
+| **X** | **Y** | **#** |
+|-------|-------|-------|
+| 7312  | 5480  | 110   |
+| x     | y     | size  |
+| 6305  | 2976  | 2615  |
+| 1487  | 1311  | 2390  |
+| 4825  | 4411  | 1979  |
+| 7091  | 4509  | 1749  |
+| 6146  | 440   | 1336  |
+| 4201  | 4849  | 1145  |
+| 4157  | 4578  | 964   |
+| 2238  | 4692  | 866   |
+| 6912  | 2263  | 730   |
+| 4226  | 941   | 556   |
+| 3836  | 3474  | 488   |
+| 4420  | 1469  | 486   |
+| 3104  | 1414  | 431   |
+| 4864  | 3920  | 406   |
+| 1657  | 3532  | 374   |
+| 2741  | 3304  | 372   |
+| 5339  | 4416  | 366   |
+| 3699  | 2211  | 328   |
+| 6215  | 3653  | 320   |
+| 3463  | 888   | 304   |
+| 3724  | 4012  | 268   |
+| 3781  | 2749  | 238   |
+| 3666  | 1629  | 210   |
+| 3789  | 4162  | 210   |
+| 3754  | 2750  | 202   |
+| 4571  | 4648  | 200   |
+| 444   | 4216  | 198   |
+| 3845  | 4019  | 197   |
+| 501   | 495   | 184   |
+| 2423  | 3574  | 178   |
+| 3780  | 3871  | 174   |
+| 4740  | 1487  | 172   |
+| 37    | 1456  | 169   |
+| 3762  | 3416  | 164   |
+| 4460  | 4713  | 142   |
+| 4515  | 3826  | 138   |
+| 5043  | 3241  | 126   |
+| 2623  | 5137  | 123   |
+| 821   | 1728  | 122   |
+| 1376  | 1785  | 120   |
+| 6440  | 2019  | 118   |
+| 3320  | 2556  | 118   |
+| 4028  | 4686  | 116   |
+| 344   | 616   | 112   |
+| 3689  | 3576  | 102   |
+| 5800  | 3889  | 102   |
+| 3781  | 5369  | 102   |
+| 240   | 1444  | 102   |
+| 1957  | 835   | 92    |
+| 429   | 826   | 90    |
+| 1846  | 1931  | 85    |
+| 2631  | 1848  | 81    |
+| 596   | 102   | 80    |
+| 2249  | 3088  | 80    |
+| 3818  | 3447  | 72    |
+| 3675  | 3991  | 72    |
+| 2360  | 1080  | 68    |
+| 470   | 4720  | 67    |
+| 391   | 3296  | 66    |
+| 3749  | 4961  | 66    |
+| 6401  | 1832  | 64    |
+| 3732  | 5452  | 64    |
+| 3709  | 3550  | 64    |
+| 415   | 1222  | 63    |
+| 460   | 2350  | 62    |
+| 5454  | 292   | 61    |
+| 1062  | 2395  | 56    |
+| 1018  | 193   | 54    |
+| 4981  | 1941  | 50    |
+| 1748  | 820   | 48    |
+| 855   | 2123  | 44    |
+| 940   | 2458  | 44    |
+| 1004  | 720   | 42    |
+| 640   | 833   | 40    |
+| 836   | 4125  | 40    |
+| 1220  | 1737  | 40    |
+| 1259  | 2648  | 40    |
+| 3924  | 4234  | 38    |
+| 4327  | 5334  | 37    |
+| 808   | 2604  | 37    |
+| 237   | 2178  | 36    |
+| 3873  | 5067  | 35    |
+| 619   | 6     | 34    |
+| 100   | 5467  | 33    |
+| 3727  | 2792  | 32    |
+| 314   | 2211  | 32    |
+| 1333  | 3568  | 32    |
+| 1035  | 1539  | 30    |
+| 934   | 3223  | 30    |
+| 1421  | 601   | 30    |
+| 1153  | 2339  | 30    |
+| 872   | 711   | 30    |
+| 4246  | 5361  | 28    |
+| 5145  | 964   | 28    |
+| 6598  | 1191  | 28    |
+| 3742  | 2781  | 28    |
+| 1099  | 1739  | 28    |
+| 1581  | 3080  | 28    |
+| 6134  | 2230  | 28    |
+| 1184  | 4394  | 27    |
+| 682   | 2882  | 27    |
+| 5904  | 2335  | 26    |
+| 4703  | 2438  | 26    |
+| 5112  | 1265  | 24    |
+| 527   | 1242  | 24    |
+| 915   | 901   | 24    |
+| 456   | 210   | 24    |
+| 3662  | 4758  | 23    |
+| 2087  | 1711  | 22    |
+| 1762  | 1920  | 22    |
+
+
+
+
 ## Image stitching
 
 Below is a sample result of stitching images together to show the process on the console as well as the resulting
