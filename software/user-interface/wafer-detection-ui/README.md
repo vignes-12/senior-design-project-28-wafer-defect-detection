@@ -26,3 +26,18 @@ pip install ffpyplayer
 
  error: Microsoft Visual C++ 14.0 or greater is required. Get it with "Microsoft C++ Build Tools": https://visualstudio.microsoft.com/visual-cpp-build-tools/
       [end of output]
+
+
+Requirements
+
+- Do the arrows including Z (up is negative, down is positive)
+- Run Auto should be in a differnt that starts scan and runs vignes code
+- Increment needs to be in a range (0.1 - 10) --> SLider
+- Since camera have a placeholder 
+- Reformat 
+- Indicator for established connection
+- Error check (bounds)
+- Store coordinates and print them to 
+
+- Four parameters for vignes code 
+- Folder path:

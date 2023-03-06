@@ -5,17 +5,22 @@ import time
 # Uncomment this line
 # ser1 = serial.Serial('COM3', 115200)
 # Comment this line during test
-global ser1
+
+# global ser1
 
 
 class GCodeExecutor(object):
+
+    ser1 = serial.Serial
 
     def connect_serial(self):
         port = self.port_input
         baudrate = 115200
 
         try:
+            global ser1
             ser1 = serial.Serial(port, baudrate)
+            print(ser1)
             print(f"Connected to {port}")
             
         except:
@@ -24,7 +29,9 @@ class GCodeExecutor(object):
 
     def gcode_write(self, command):
         print(f'Writing command {command}')
-        ser1.write(b"{command}")
+        print(ser1)
+        # ser1.write(b"{command}")
+        ser1.write(command.encode())
 
                 
     # def gcode_move(self, x, y):

@@ -11,6 +11,7 @@ from modules.utils.gcode_executor import GCodeExecutor
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.switch import Switch
 from modules.utils.gcode_executor import GCodeExecutor
+import serial
 
 
 class InputControls(BoxLayout):
@@ -123,13 +124,13 @@ class InputControls(BoxLayout):
             self.text_input_x.disabled = True
             self.text_input_y.disabled = True
             command = f"G91\n"
-            # self.gcodeExecutor.gcode_write(command)
+            self.gcodeExecutor.gcode_write(command)
         else:
             print('Switching mode to Absolute position')
             self.text_input_x.disabled = False
             self.text_input_y.disabled = False
             command = f"G90\n"
-            # self.gcodeExecutor.gcode_write(command)
+            self.gcodeExecutor.gcode_write(command)
 
     def connect_serial(self, instance):
         self.gcodeExecutor.port_input = self.text_input_port.text
@@ -141,7 +142,7 @@ class InputControls(BoxLayout):
         increment_x = float(self.text_input_x.text)
         increment_y = float(self.text_input_y.text)
         command = f"G0 X{increment_x} Y{increment_y}\n"
-        # self.gcodeExecutor.gcode_write(command)
+        self.gcodeExecutor.gcode_write(command)
         
 
     # Define a function to run when the up arrow button is clicked
@@ -149,7 +150,7 @@ class InputControls(BoxLayout):
         print(f'Moving up... {self.text_input_incr.text}')
         increment = float(self.text_input_incr.text)
         command = f"G0 Y{increment}\n"
-        # self.gcodeExecutor.gcode_write(command)
+        self.gcodeExecutor.gcode_write(command)
         
 
     # Define a function to run when the down arrow button is clicked
@@ -157,7 +158,7 @@ class InputControls(BoxLayout):
         print(f'Moving down... {self.text_input_incr.text}')
         increment = float(self.text_input_incr.text)
         command = f"G0 Y-{increment}\n"
-        # self.gcodeExecutor.gcode_write(command)
+        self.gcodeExecutor.gcode_write(command)
         
 
     # Define a function to run when the left arrow button is clicked
@@ -165,7 +166,7 @@ class InputControls(BoxLayout):
         print(f'Moving left... {self.text_input_incr.text}')
         increment = float(self.text_input_incr.text)
         command = f"G0 X-{increment}\n"
-        # self.gcodeExecutor.gcode_write(command)
+        self.gcodeExecutor.gcode_write(command)
       
 
     # Define a function to run when the right arrow button is clicked
@@ -173,7 +174,7 @@ class InputControls(BoxLayout):
         print(f'Moving right... {self.text_input_incr.text}')
         increment = float(self.text_input_incr.text)
         command = f"G0 X{increment}\n"
-        # self.gcodeExecutor.gcode_write(command)
+        self.gcodeExecutor.gcode_write(command)
        
     # Define a function to run when the auto button is clicked 
     def run_auto(self, instance):

@@ -16,6 +16,9 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.camera import Camera
 from kivy.uix.button import Button
 import time
+
+
+
 Builder.load_string('''
 <MainDashboard>:
     # cols: 2    
@@ -38,8 +41,8 @@ Builder.load_string('''
     GridLayout:
         cols: 2
         size_hint_y: 0.9
-        # CameraUI:
-        #     launched: True
+        #CameraUI:
+            #launched: True
         InputControls:
             launched: True
        
