@@ -1,15 +1,17 @@
- SOFTWARE CONTROL IN G-CODE
+SOFTWARE CONTROL IN G-CODE
 
 For User Interface Buttons:
 
-Input box for increment movement (mm): allow values as precise as 0.1mm
+Input box for increment movement (mm): Slider allow values as precise as 0.1mm, range from 0.1-10mm
 (from this point forward, input referenced as 'Q')
 
 Homing: 'G28 X Y\n'
 
 Switch Mode to Relative Position: 'G91\n'
-Up Button (must be in RELATIVE): 	'G0 YQ\n'
-Down Button (must be in RELATIVE): 	'G0 Y-Q\n'
+Up Button (must be in RELATIVE): 	'G0 Z-Q\n'
+Down Button (must be in RELATIVE): 	'G0 ZQ\n'
+Back Button (must be in RELATIVE):	'G0 YQ\n'
+Forward Button (must be in RELATIVE): 	'G0 Y-Q\n'
 Left Button (must be in RELATIVE): 	'G0 X-Q\n'
 Right Button (must be in RELATIVE): 	'G0 XQ\n'
 
@@ -32,3 +34,26 @@ SURFACE LAYOUT
 	|				|
 0,0	-----------------------	400,0
 
+
+BUTTON LAYOUT
+
+			BACK
+			+Y
+			^
+			
+			
+			
+LEFT <						> RIGHT
+-X						X
+
+
+
+			
+			FRONT
+			-Y
+
+UP
+-Z
+
+Z
+DOWN
