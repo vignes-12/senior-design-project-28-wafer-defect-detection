@@ -1,4 +1,4 @@
-SOFTWARE CONTROL IN G-CODE
+ SOFTWARE CONTROL IN G-CODE
 
 For User Interface Buttons:
 
