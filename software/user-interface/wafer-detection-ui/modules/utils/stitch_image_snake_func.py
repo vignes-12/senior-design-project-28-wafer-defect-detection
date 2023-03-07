@@ -22,6 +22,9 @@ def stitch_images_snake(directory_path, folder_name, image_name, x, y):
     :return: Stitched image
     """
 
+    x = int(x)
+    y = int(y)
+
     image_directory_path = os.path.join(directory_path, folder_name)
     if not os.path.exists(image_directory_path):
         os.mkdir(image_directory_path)
