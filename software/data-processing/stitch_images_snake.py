@@ -116,8 +116,8 @@ while always:
     directory_name = input("What directory would you like to store all images for stitching into?").upper()
     directory_path = os.path.join(DATADIR, directory_name)
     if not os.path.exists(directory_path):
-        print("Path does not exist. Please try again.")
-        continue
+        print("Path does not exist. Creating new directory " + directory_name + "...")
+        os.mkdir(directory_path)
     else:
         x_images = input("How many images horizontally will the final image be?")
         if not x_images.isnumeric():
