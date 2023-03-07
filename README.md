@@ -58,10 +58,16 @@ lengths of widths of the final image in terms of the size of one image. Similar 
 will take up to the width times length images that are inserted into a directory under "processed-
 stitched-snake" of the user's choice and stitch them to produce a final image with a name of their choice, within the
 same directory. I have also made it call a slightly-modified version of my stats.py file called stats_stitch.py which 
-generates statistics of that image and then saves it in a CSV file inside that folder. I have done this by taking each 
-image from the corresponding image in the "processed" folder and pasting it in the directory of the user's choice (in 
-this case, "test"). You can see a sample run of one stitched image below. There are other stitched images in their
-corresponding "test_X" directories as well. 
+generates statistics of that image and then saves it in a CSV file inside that folder automatically as well. I have done
+this by taking each image from the corresponding image in the "processed" folder and pasting it in the directory of the
+user's choice (in this case, "test"). You can see a sample run of one stitched image below. There are other stitched 
+images in their corresponding "test_X" directories as well.
+
+There is also a stitch_image_snake_func.py and its corresponding test script that is simply a function-only version of
+stitch_image_snake.py, which will be used to integrate into the UI to generate the data after the user scans for defects
+and then send it back to the UI to display to the user. It is working right now, but will need to be integrated with the
+UI later on. It will also not output anything in the console or display images like previous scripts to minimize the 
+load of the script and improve its efficiency.
 
 The last script, cnn.py, is currently in work-in-progress. It aims to classify wafer defects based on a neural network
 called a Convolutional Neural Network. However, since this is one of the last priorities of the project, this is not
