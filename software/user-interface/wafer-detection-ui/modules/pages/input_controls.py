@@ -32,7 +32,7 @@ class InputControls(BoxLayout):
         # self.orientation = 'vertical'
         self.orientation = 'vertical'
 
-        self.layout = GridLayout(rows=2, cols=3, spacing = 0, row_force_default=True, row_default_height=40, padding=(20))
+        self.layout = GridLayout(rows=3, cols=3, spacing = 0, row_force_default=True, row_default_height=40, padding=(20))
         self.label_port = Label(text='Serial Port')
         self.text_input_port = TextInput(size_hint_y=None,size_hint_x=None, height='32dp', size=(300, 35), multiline = False)
         self.button_port = Button(text='Connect', size_hint=(None, None), size=(100, 35))
@@ -43,24 +43,29 @@ class InputControls(BoxLayout):
 
         # self.layout1 = GridLayout(cols=3, row_force_default=True, row_default_height=40, padding=(20))
 
-        # self.label = Label(text='Enter increment (mm):')
-        # self.text_input_incr = TextInput(size_hint_y=None,size_hint_x=None, height='32dp', size=(100, 35), multiline = False)
-        # self.layout.add_widget(self.label)
-        # self.layout.add_widget(self.text_input_incr)
+        self.label = Label(text='Enter increment (mm):')
+        self.text_input_incr = TextInput(size_hint_y=None,size_hint_x=None, height='32dp', size=(100, 35), multiline = False)
+        self.layout.add_widget(self.label)
+        self.layout.add_widget(self.text_input_incr)
         
 
-        # create label and slider widgets
-        self.label = Label(text='Select increment (mm):', size_hint_y=None, height='32dp')
-        self.slider = Slider(min=0, max=10, step=0.1, size_hint_y=None, height='32dp')
-        # add widgets to layout
-        self.layout.add_widget(self.label)
-        self.layout.add_widget(self.slider)
-        self.slider_value = Label(text=str(self.slider.value), size_hint_y=None, height='32dp')
-        # bind label to slider value
-        self.slider.bind(value=self.on_value_change)
-        self.layout.add_widget(self.slider_value)
+        # # create label and slider widgets
+        # self.label = Label(text='Select increment (mm):', size_hint_y=None, height='32dp')
+        # self.slider = Slider(min=0, max=10, step=0.1, size_hint_y=None, height='32dp')
+        # # add widgets to layout
+        # self.layout.add_widget(self.label)
+        # self.layout.add_widget(self.slider)
+        # self.slider_value = Label(text=str(self.slider.value), size_hint_y=None, height='32dp')
+        # # bind label to slider value
+        # self.slider.bind(value=self.on_value_change)
+        # self.layout.add_widget(self.slider_value)
 
+#homing button
 
+        self.button_home = Button(text='Home', size_hint=(None, None), size=(100, 35))
+        self.button_home.bind(on_press=self.home_device)
+        self.layout.add_widget(self.button_home)
+   
 
 
 
@@ -202,14 +207,14 @@ class InputControls(BoxLayout):
         self.gcodeExecutor.connect_serial()
 
     def move_z_down(self, instance):
-        print(f'Moving down... {self.slider.value}')
-        increment = float(self.slider.value)
+        print(f'Moving down... {self.text_input_incr.text}')
+        increment = float(self.text_input_incr.text)
         command = f"G0 Z{increment}\n"
         self.gcodeExecutor.gcode_write(command)
 
     def move_z_up(self, instance):
-        print(f'Moving down... {self.slider.value}')
-        increment = float(self.slider.value)
+        print(f'Moving up... {self.text_input_incr.text}')
+        increment = float(self.text_input_incr.text)
         command = f"G0 Z-{increment}\n"
         self.gcodeExecutor.gcode_write(command)
 
@@ -223,32 +228,32 @@ class InputControls(BoxLayout):
 
     # Define a function to run when the up arrow button is clicked
     def move_up(self, instance):
-        print(f'Moving back... {self.slider.value}')
-        increment = float(self.slider.value)
+        print(f'Moving back... {self.text_input_incr.text}')
+        increment = float(self.text_input_incr.text)
         command = f"G0 Y{increment}\n"
         self.gcodeExecutor.gcode_write(command)
         
 
     # Define a function to run when the down arrow button is clicked
     def move_down(self, instance):
-        print(f'Moving forward... {self.slider.value}')
-        increment = float(self.slider.value)
+        print(f'Moving forward... {self.text_input_incr.text}')
+        increment = float(self.text_input_incr.text)
         command = f"G0 Y-{increment}\n"
         self.gcodeExecutor.gcode_write(command)
         
 
     # Define a function to run when the left arrow button is clicked
     def move_left(self, instance):
-        print(f'Moving left... {self.slider.value}')
-        increment = float(self.slider.value)
+        print(f'Moving left... {self.text_input_incr.text}')
+        increment = float(self.text_input_incr.text)
         command = f"G0 X-{increment}\n"
         self.gcodeExecutor.gcode_write(command)
       
 
     # Define a function to run when the right arrow button is clicked
     def move_right(self, instance):
-        print(f'Moving right... {self.slider.value}')
-        increment = float(self.slider.value)
+        print(f'Moving right... {self.text_input_incr.text}')
+        increment = float(self.text_input_incr.text)
         command = f"G0 X{increment}\n"
         self.gcodeExecutor.gcode_write(command)
        
@@ -261,3 +266,8 @@ class InputControls(BoxLayout):
     #Print values for the sliders
     def on_value_change(self, instance, value):
         self.slider_value.text = str(value)
+
+    def home_device(self, instance):
+        print(f'Homing... {self.text_input_incr.text}')
+        command = f"G28 X Y\n"
+        self.gcodeExecutor.gcode_write(command)

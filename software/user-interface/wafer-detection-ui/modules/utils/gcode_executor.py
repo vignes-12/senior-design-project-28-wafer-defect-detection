@@ -29,7 +29,7 @@ class GCodeExecutor(object):
     def gcode_write(self, command):
         print(f'Writing command {command}')
         print(ser1)
-        # ser1.write(b"{command}")
+        #ser1.write(b"{command}")
         ser1.write(command.encode())
 
                 
@@ -63,19 +63,23 @@ class GCodeExecutor(object):
             print("y_start: ")
             print(y_start)
             
-            ser1.write(('G90\n').encode())
             ser1.write(('G28 X Y\n').encode())
-            time.sleep(5)
+            time.sleep(10)
             
             command = "G0 X" + str(x_start) + " Y" + str(y_start)
             print(command)
             command += "\n"
             ser1.write(command.encode())
             time.sleep(5)
+
+            # command = "G0 Z-350\n"
+            # ser1.write(command.encode())
             
             ser1.write(('G91\n').encode())
             
             inp = input("press any key to begin sequence, q to quit")
+            #ser1.write(('G90\n').encode())
+
             if('q' in inp):
                 exit()
             
