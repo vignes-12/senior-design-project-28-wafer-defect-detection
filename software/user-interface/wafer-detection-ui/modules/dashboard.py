@@ -42,8 +42,8 @@ Builder.load_string('''
     GridLayout:
         cols: 2
         size_hint_y: 0.9
-        # CameraUI:
-        #     launched: True
+        CameraUI:
+            launched: True
         InputControls:
             launched: True
         # MainScreen:

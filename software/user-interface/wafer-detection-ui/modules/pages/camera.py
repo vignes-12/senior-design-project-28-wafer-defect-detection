@@ -22,6 +22,9 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.camera import Camera
 from kivy.uix.button import Button
 import time
+
+
+
 Builder.load_string('''
 <CameraUI>:
     orientation: 'vertical'
@@ -30,6 +33,7 @@ Builder.load_string('''
         resolution: (640, 480)
         play: False
         allow_stretch: True
+        on_error: root.handle_camera_error(*args)
                
     ToggleButton:
         text: 'Start/Stop'
@@ -69,3 +73,4 @@ class CameraUI(BoxLayout):
     
     def handle_camera_error(self, instance, value):
         self.ids.status_label.text = 'Failed to start camera: ' + str(value)
+        self.ids.camera.play = False
