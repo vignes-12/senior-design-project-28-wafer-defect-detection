@@ -1,0 +1,18 @@
+#:kivy 2.1.0
+
+
+<HomePage>:
+    ScrollView:
+        do_scroll_x: False
+        do_scroll_y: False 
+        AnchorLayout:
+            size_hint_y: None
+            height: root.height 
+            GridLayout:
+                id: content
+                cols: 3
+                spacing: '8dp'
+                padding: '8dp'
+                size_hint: (1, 1) 
+                height: self.height 
+
