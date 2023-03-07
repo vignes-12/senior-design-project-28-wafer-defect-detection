@@ -29,6 +29,8 @@ Builder.load_string('''
         id: camera
         resolution: (640, 480)
         play: False
+        allow_stretch: True
+               
     ToggleButton:
         text: 'Start/Stop'
         on_press: camera.play = not camera.play
@@ -64,3 +66,6 @@ class CameraUI(BoxLayout):
         camera.export_to_png("IMG_{}.png".format(timestr))
        
         print("Captured")
+    
+    def handle_camera_error(self, instance, value):
+        self.ids.status_label.text = 'Failed to start camera: ' + str(value)

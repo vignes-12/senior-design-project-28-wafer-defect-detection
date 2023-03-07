@@ -32,7 +32,7 @@ Requirements
 
 - Do the arrows including Z (up is negative, down is positive)
 - Run Auto should be in a differnt that starts scan and runs vignes code
-- Increment needs to be in a range (0.1 - 10) --> SLider
+- Increment needs to be in a range (0.1 - 10) --> SLider (DONE)
 - Since camera have a placeholder 
 - Reformat 
 - Indicator for established connection

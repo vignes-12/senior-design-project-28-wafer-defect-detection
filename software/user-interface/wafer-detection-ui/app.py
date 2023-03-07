@@ -34,6 +34,8 @@ from kivymd.uix.toolbar import MDTopAppBar
 from kivy.uix.spinner import Spinner
 from kivy.clock import Clock
 
+from modules.pages.full_scan import FullScan
+
 
 
 gc.disable()
@@ -57,6 +59,12 @@ KV = '''
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "wafer_map"
             
+            OneLineListItem:
+                text: "Run Full Scan"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "full_scan"
+        
             OneLineListItem:
                 text: "Others"
                 on_press:
@@ -93,6 +101,13 @@ Screen:
                     halign: "center"
             
             Screen:
+                name: "full_scan"
+
+                FullScan:
+
+                
+
+            Screen:
                 name: "others"
 
                 MDLabel:
@@ -114,24 +129,6 @@ class ContentNavigationDrawer(BoxLayout):
 
     def __init__(self, **kwargs):
         super(ContentNavigationDrawer, self).__init__(**kwargs)
-
-        # Create the spinner and hide it initially
-        self.spinner = Spinner(size_hint=(None, None), size=(50, 50))
-        self.spinner.pos_hint = {'center_x': 0.5, 'center_y': 0.5}
-        self.spinner.active = False
-        self.add_widget(self.spinner)
-
-        # Schedule a function to simulate loading content after 2 seconds
-        Clock.schedule_once(self.load_content, 2)
-    
-    def load_content(self, *args):
-        # Show the spinner and start loading content
-        self.spinner.active = True
-        
-        # Load content here
-        
-        # Hide the spinner when loading is complete
-        self.spinner.active = False
 
 class MainApp(MDApp):
 

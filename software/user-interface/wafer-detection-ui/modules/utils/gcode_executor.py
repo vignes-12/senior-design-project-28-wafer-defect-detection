@@ -21,8 +21,7 @@ class GCodeExecutor(object):
             global ser1
             ser1 = serial.Serial(port, baudrate)
             print(ser1)
-            print(f"Connected to {port}")
-            
+            print(f"Connected to {port}")            
         except:
             print("Connection failed")
                        

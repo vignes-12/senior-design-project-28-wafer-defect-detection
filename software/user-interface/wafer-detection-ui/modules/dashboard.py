@@ -9,6 +9,7 @@ from modules.pages.camera import CameraUI
 from modules.pages.motor_controls import MotorControls
 from modules.pages.input_controls import InputControls
 from kivy.uix.camera import Camera
+from modules.pages.main_screen import MainScreen
 
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
@@ -41,10 +42,11 @@ Builder.load_string('''
     GridLayout:
         cols: 2
         size_hint_y: 0.9
-        #CameraUI:
-            #launched: True
+        # CameraUI:
+        #     launched: True
         InputControls:
             launched: True
+        # MainScreen:
        
             
 ''')
