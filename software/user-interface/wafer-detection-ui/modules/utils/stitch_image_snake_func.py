@@ -22,14 +22,11 @@ def stitch_images_snake(directory_path, folder_name, image_name, x, y):
     :return: Stitched image
     """
 
-    x = int(x)
-    y = int(y)
-
     image_directory_path = os.path.join(directory_path, folder_name)
     if not os.path.exists(image_directory_path):
         os.mkdir(image_directory_path)
 
-    total_images = x * y  # total number of images in final image
+    total_images = int(x) * int(y)  # total number of images in final image
     known_images = []  # list of known images
     image_stitch_needed = False  # flag for whether a new image needs to be stitched
     first_time = True  # first time stitching flag
