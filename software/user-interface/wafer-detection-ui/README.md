@@ -38,6 +38,9 @@ Requirements
 - Indicator for established connection
 - Error check (bounds)
 - Store coordinates and print them to 
+- Turn on/off motors M commands 
+- UI crashing issue 
+- Pop up error box when out of bounds
 
 - Four parameters for vignes code 
 - Folder path:

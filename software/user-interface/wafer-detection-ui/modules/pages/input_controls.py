@@ -19,8 +19,6 @@ from kivy.graphics import Color, Ellipse
 
 
 
-
-
 class InputControls(BoxLayout):
     launched = False
     def __init__(self, **kwargs):
@@ -66,11 +64,6 @@ class InputControls(BoxLayout):
         self.button_home.bind(on_press=self.home_device)
         self.layout.add_widget(self.button_home)
    
-
-
-
-
-
         # Add input buttons
         self.layout2 = GridLayout(rows=4, cols=2, row_force_default=True, row_default_height=40, padding=(20))
 
@@ -82,8 +75,7 @@ class InputControls(BoxLayout):
         self.switch_mode.bind(active=self.on_switch_active)
         self.layout2.add_widget(self.switch_mode)
 
-        
-
+    
         # Add X & Y positions
         self.label_x = Label(text='Enter X:')
         self.text_input_x = TextInput(size_hint_y=None,size_hint_x=None, height='32dp', size=(50, 35), multiline = False)
@@ -156,9 +148,6 @@ class InputControls(BoxLayout):
         # self.layout3.add_widget(self.temp_layout)
 
         
-
-
-
 #auto button with input wafer size
 
         self.layout4 = GridLayout(rows=4, cols=2, row_force_default=True, row_default_height=40, padding=(20))
@@ -178,8 +167,6 @@ class InputControls(BoxLayout):
         # self.add_widget(self.temp_grid_layout)
         self.add_widget(self.layout3)
         self.add_widget(self.layout4)
-
-
 
 
 
@@ -267,6 +254,7 @@ class InputControls(BoxLayout):
     def on_value_change(self, instance, value):
         self.slider_value.text = str(value)
 
+    #Add Homing feature 
     def home_device(self, instance):
         print(f'Homing... {self.text_input_incr.text}')
         command = f"G28 X Y\n"
