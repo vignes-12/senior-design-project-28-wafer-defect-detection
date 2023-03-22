@@ -2,6 +2,7 @@ import csv
 import numpy as np
 import os
 import cv2
+import time
 from PIL import Image
 # from matplotlib import pyplot as plt
 
@@ -21,6 +22,9 @@ def stitch_images_snake(directory_path, folder_name, image_name, x, y):
     :param y: How many images long the final image will be
     :return: Stitched image
     """
+
+    x = int(x)
+    y = int(y)
 
     image_directory_path = os.path.join(directory_path, folder_name)
     if not os.path.exists(image_directory_path):
@@ -49,7 +53,8 @@ def stitch_images_snake(directory_path, folder_name, image_name, x, y):
         if image_stitch_needed:  # if there are new images that need to be stitched
             # print(f"New image #{total_counter + 1} " + new_image_name[0] + " found. Stitching it now...")
             known_images.append(new_image_name[0])  # append the new image to known images
-            new_image = Image.open(os.path.join(image_directory_path, new_image_name[0]))  # open the image
+            time.sleep(1)
+            new_image = Image.open(os.path.join(image_directory_path, new_image_name[0]), "r")  # open the image
 
             if first_time:  # if it's the first time stitching
                 first_time = False  # set the flag to false
