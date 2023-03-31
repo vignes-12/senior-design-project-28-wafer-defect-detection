@@ -161,6 +161,10 @@ class InputControls(BoxLayout):
         self.layout4.add_widget(self.text_input_port_auto)
         self.layout4.add_widget(self.button_port_auto)
 
+        self.button_port_cont = Button(text='Continue Auto', size_hint=(None, None), size=(100, 35))
+        self.button_port_cont.bind(on_press=self.continue_auto)
+        self.layout4.add_widget(self.button_port_cont)
+
 
         self.add_widget(self.layout)
         self.add_widget(self.layout2)
@@ -194,21 +198,34 @@ class InputControls(BoxLayout):
         self.gcodeExecutor.connect_serial()
 
     def move_z_down(self, instance):
-        print(f'Moving down... {self.text_input_incr.text}')
-        increment = float(self.text_input_incr.text)
-        command = f"G0 Z{increment}\n"
-        self.gcodeExecutor.gcode_write(command)
+        try:
+            print(f'Moving down... {self.text_input_incr.text}')
+            increment = float(self.text_input_incr.text)
+            command = f"G91\n"
+            self.gcodeExecutor.gcode_write(command)
+            command = f"G0 Z{increment}\n"
+            self.gcodeExecutor.gcode_write(command)
+        except:
+            print("MOVE FAILED")
 
     def move_z_up(self, instance):
         print(f'Moving up... {self.text_input_incr.text}')
-        increment = float(self.text_input_incr.text)
-        command = f"G0 Z-{increment}\n"
-        self.gcodeExecutor.gcode_write(command)
+        try:
+            increment = float(self.text_input_incr.text)
+            command = f"G91\n"
+            self.gcodeExecutor.gcode_write(command)
+            command = f"G0 Z-{increment}\n"
+            self.gcodeExecutor.gcode_write(command)
+        except:
+            print("MOVE FAILED")
+        
 
     def move_abs(self, instance):
         print(f'Moving to absolute position... ( {self.text_input_x.text},  {self.text_input_y.text})')
         increment_x = float(self.text_input_x.text)
         increment_y = float(self.text_input_y.text)
+        command = f"G90\n"
+        self.gcodeExecutor.gcode_write(command)
         command = f"G0 X{increment_x} Y{increment_y}\n"
         self.gcodeExecutor.gcode_write(command)
         
@@ -216,38 +233,61 @@ class InputControls(BoxLayout):
     # Define a function to run when the up arrow button is clicked
     def move_up(self, instance):
         print(f'Moving back... {self.text_input_incr.text}')
-        increment = float(self.text_input_incr.text)
-        command = f"G0 Y{increment}\n"
-        self.gcodeExecutor.gcode_write(command)
+        try:
+            increment = float(self.text_input_incr.text)
+            command = f"G91\n"
+            self.gcodeExecutor.gcode_write(command)
+            command = f"G0 Y{increment}\n"
+            self.gcodeExecutor.gcode_write(command)
+        except:
+            print("MOVE FAILED")
         
 
     # Define a function to run when the down arrow button is clicked
     def move_down(self, instance):
         print(f'Moving forward... {self.text_input_incr.text}')
-        increment = float(self.text_input_incr.text)
-        command = f"G0 Y-{increment}\n"
-        self.gcodeExecutor.gcode_write(command)
+        try:
+            increment = float(self.text_input_incr.text)
+            command = f"G91\n"
+            self.gcodeExecutor.gcode_write(command)
+            command = f"G0 Y-{increment}\n"
+            self.gcodeExecutor.gcode_write(command)
+        except:
+            print("MOVE FAILED")
         
 
     # Define a function to run when the left arrow button is clicked
     def move_left(self, instance):
         print(f'Moving left... {self.text_input_incr.text}')
-        increment = float(self.text_input_incr.text)
-        command = f"G0 X-{increment}\n"
-        self.gcodeExecutor.gcode_write(command)
+        try:
+            increment = float(self.text_input_incr.text)
+            command = f"G91\n"
+            self.gcodeExecutor.gcode_write(command)
+            command = f"G0 X-{increment}\n"
+            self.gcodeExecutor.gcode_write(command)
+        except:
+            print("MOVE FAILED")
       
 
     # Define a function to run when the right arrow button is clicked
     def move_right(self, instance):
         print(f'Moving right... {self.text_input_incr.text}')
-        increment = float(self.text_input_incr.text)
-        command = f"G0 X{increment}\n"
-        self.gcodeExecutor.gcode_write(command)
+        try:
+            increment = float(self.text_input_incr.text)
+            command = f"G91\n"
+            self.gcodeExecutor.gcode_write(command)
+            command = f"G0 X{increment}\n"
+            self.gcodeExecutor.gcode_write(command)
+        except:
+            print("MOVE FAILED")
        
     # Define a function to run when the auto button is clicked 
     def run_auto(self, instance):
         self.gcodeExecutor.input_wafer_size = self.text_input_port_auto.text
         self.gcodeExecutor.run_auto()
+
+    def continue_auto(self, instance):
+        self.gcodeExecutor.continue_auto()
 
 
     #Print values for the sliders
