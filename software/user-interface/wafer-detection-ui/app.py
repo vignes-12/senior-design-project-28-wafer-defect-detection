@@ -152,8 +152,6 @@ class MainApp(MDApp):
 
         return Builder.load_string(KV)
     
-  
-
 if __name__ == "__main__":
     MainApp().run()
 

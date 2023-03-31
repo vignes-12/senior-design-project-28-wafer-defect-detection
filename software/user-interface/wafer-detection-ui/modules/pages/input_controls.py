@@ -5,6 +5,8 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.slider import Slider
+from kivy.uix.dropdown import DropDown
+from kivy.base import runTouchApp
 from kivy.lang import Builder
 from kivy.graphics import Color, Line
 from modules.utils.gcode_executor import GCodeExecutor
@@ -16,6 +18,7 @@ from kivymd.uix.button import MDIconButton
 from kivymd.uix.label import MDLabel
 from kivymd.icon_definitions import md_icons
 from kivy.graphics import Color, Ellipse
+from modules.utils.popup import *
 
 
 
@@ -32,12 +35,26 @@ class InputControls(BoxLayout):
 
         self.layout = GridLayout(rows=3, cols=3, spacing = 0, row_force_default=True, row_default_height=40, padding=(20))
         self.label_port = Label(text='Serial Port')
+
+        self.dropdown = DropDown()
+        for index in range(10):
+            btn = Button(text='COM%d' % index, size_hint_y=None, height=35)
+            btn.bind(on_release=lambda btn: self.connect_serial(port=btn.text))
+            btn.bind(on_release=lambda btn: self.dropdown.select(btn.text))
+            self.dropdown.add_widget(btn)
+
+        self.mainbutton = Button(text='COM PORT', size_hint_y=None, height=35)
+
+        self.mainbutton.bind(on_release=self.dropdown.open)
+
+        self.dropdown.bind(on_select=lambda instance, x: setattr(self.mainbutton, 'text', x))
+
         self.text_input_port = TextInput(size_hint_y=None,size_hint_x=None, height='32dp', size=(300, 35), multiline = False)
-        self.button_port = Button(text='Connect', size_hint=(None, None), size=(100, 35))
-        self.button_port.bind(on_press=self.connect_serial)
+        #self.button_port = Button(text='Connect', size_hint=(None, None), size=(100, 35))
+        #self.button_port.bind(on_press=self.connect_serial)
         self.layout.add_widget(self.label_port)
-        self.layout.add_widget(self.text_input_port)
-        self.layout.add_widget(self.button_port)
+        self.layout.add_widget(self.mainbutton)
+        #self.layout.add_widget(self.button_port)
 
         # self.layout1 = GridLayout(cols=3, row_force_default=True, row_default_height=40, padding=(20))
 
@@ -71,9 +88,9 @@ class InputControls(BoxLayout):
         self.layout2.add_widget(Label(text='Switch Mode (Relative)'))
 
         # Add a switch
-        self.switch_mode = Switch(active=False)
-        self.switch_mode.bind(active=self.on_switch_active)
-        self.layout2.add_widget(self.switch_mode)
+        #self.switch_mode = Switch(active=False)
+        #self.switch_mode.bind(active=self.on_switch_active)
+        #self.layout2.add_widget(self.switch_mode)
 
     
         # Add X & Y positions
@@ -193,9 +210,9 @@ class InputControls(BoxLayout):
             command = f"G90\n"
             self.gcodeExecutor.gcode_write(command)
 
-    def connect_serial(self, instance):
-        self.gcodeExecutor.port_input = self.text_input_port.text
-        self.gcodeExecutor.connect_serial()
+    def connect_serial(self, port):
+        #self.gcodeExecutor.port_input = self.text_input_port.text
+        self.gcodeExecutor.connect_serial(port)
 
     def move_z_down(self, instance):
         try:
@@ -206,7 +223,7 @@ class InputControls(BoxLayout):
             command = f"G0 Z{increment}\n"
             self.gcodeExecutor.gcode_write(command)
         except:
-            print("MOVE FAILED")
+            display_error(1)
 
     def move_z_up(self, instance):
         print(f'Moving up... {self.text_input_incr.text}')
@@ -217,17 +234,20 @@ class InputControls(BoxLayout):
             command = f"G0 Z-{increment}\n"
             self.gcodeExecutor.gcode_write(command)
         except:
-            print("MOVE FAILED")
+            display_error(1)
         
 
     def move_abs(self, instance):
         print(f'Moving to absolute position... ( {self.text_input_x.text},  {self.text_input_y.text})')
-        increment_x = float(self.text_input_x.text)
-        increment_y = float(self.text_input_y.text)
-        command = f"G90\n"
-        self.gcodeExecutor.gcode_write(command)
-        command = f"G0 X{increment_x} Y{increment_y}\n"
-        self.gcodeExecutor.gcode_write(command)
+        try:
+            increment_x = float(self.text_input_x.text)
+            increment_y = float(self.text_input_y.text)
+            command = f"G90\n"
+            self.gcodeExecutor.gcode_write(command)
+            command = f"G0 X{increment_x} Y{increment_y}\n"
+            self.gcodeExecutor.gcode_write(command)
+        except:
+            display_error(1)
         
 
     # Define a function to run when the up arrow button is clicked
@@ -240,7 +260,7 @@ class InputControls(BoxLayout):
             command = f"G0 Y{increment}\n"
             self.gcodeExecutor.gcode_write(command)
         except:
-            print("MOVE FAILED")
+            display_error(1)
         
 
     # Define a function to run when the down arrow button is clicked
@@ -253,7 +273,7 @@ class InputControls(BoxLayout):
             command = f"G0 Y-{increment}\n"
             self.gcodeExecutor.gcode_write(command)
         except:
-            print("MOVE FAILED")
+            display_error(1)
         
 
     # Define a function to run when the left arrow button is clicked
@@ -266,7 +286,7 @@ class InputControls(BoxLayout):
             command = f"G0 X-{increment}\n"
             self.gcodeExecutor.gcode_write(command)
         except:
-            print("MOVE FAILED")
+            display_error(1)
       
 
     # Define a function to run when the right arrow button is clicked
@@ -279,15 +299,21 @@ class InputControls(BoxLayout):
             command = f"G0 X{increment}\n"
             self.gcodeExecutor.gcode_write(command)
         except:
-            print("MOVE FAILED")
+            display_error(1)
        
     # Define a function to run when the auto button is clicked 
     def run_auto(self, instance):
-        self.gcodeExecutor.input_wafer_size = self.text_input_port_auto.text
-        self.gcodeExecutor.run_auto()
+        try:
+            self.gcodeExecutor.input_wafer_size = self.text_input_port_auto.text
+            self.gcodeExecutor.run_auto()
+        except:
+            display_error(4)
 
     def continue_auto(self, instance):
-        self.gcodeExecutor.continue_auto()
+        try:
+            self.gcodeExecutor.continue_auto()
+        except:
+            display_error(4)
 
 
     #Print values for the sliders
@@ -296,6 +322,9 @@ class InputControls(BoxLayout):
 
     #Add Homing feature 
     def home_device(self, instance):
-        print(f'Homing... {self.text_input_incr.text}')
-        command = f"G28 X Y\n"
-        self.gcodeExecutor.gcode_write(command)
+        try:
+            print(f'Homing... {self.text_input_incr.text}')
+            command = f"G28 X Y\n"
+            self.gcodeExecutor.gcode_write(command)
+        except:
+            display_error(3)

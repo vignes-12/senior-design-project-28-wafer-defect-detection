@@ -6,6 +6,7 @@ from CameraCode import *
 # Uncomment this line
 # ser1 = serial.Serial('COM3', 115200)
 # Comment this line during test
+from modules.utils.popup import *
 
 # global ser1
 
@@ -14,8 +15,8 @@ class GCodeExecutor(object):
 
     ser1 = serial.Serial
 
-    def connect_serial(self):
-        port = self.port_input
+    def connect_serial(self, port):
+        #port = self.port_input
         baudrate = 115200
 
         try:
@@ -24,18 +25,15 @@ class GCodeExecutor(object):
             print(ser1)
             print(f"Connected to {port}")            
         except:
-            print("Connection failed")
+            display_error(2)
                        
 
     def gcode_write(self, command):
         print(f'Writing command {command}')
         
-        #ser1.write(b"{command}")
-        try:
-            print(ser1)
-            ser1.write(command.encode())
-        except:
-            print("COMMAND FAILED")
+        print(ser1)
+        ser1.write(command.encode())
+        
         
 
                 
