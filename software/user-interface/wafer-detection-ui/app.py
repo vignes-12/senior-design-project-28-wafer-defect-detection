@@ -23,6 +23,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.gridlayout import GridLayout
 
 from modules.dashboard import MainDashboard
+#from modules.pages.wafer_map_screen import WaferMap
 
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
@@ -96,9 +97,8 @@ Screen:
             Screen:
                 name: "wafer_map"
 
-                MDLabel:
-                    text: "Screen 2"
-                    halign: "center"
+                # WaferMap:
+                #     launched: True
             
             Screen:
                 name: "full_scan"
@@ -106,7 +106,6 @@ Screen:
                 FullScan:
 
                 
-
             Screen:
                 name: "others"
 

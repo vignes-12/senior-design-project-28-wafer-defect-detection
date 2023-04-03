@@ -1,7 +1,7 @@
 from stitch_image_snake_func import *
 
-DATASET_FOLDER = "C:\senior-design\software\data-processing\dataset\processed-stitched-snake"
-TEST_FOLDER = "test_13"
+DATASET_FOLDER = "C:\\Users\\geeth\\Documents\\GitHub\\Project-28-Error-Detection-on-Wafer-Surfaces_main\\software\\data-processing\\dataset\\processed-stitched-snake"
+TEST_FOLDER = "test_16"
 result_image_name = "stitched"
 length = 2
 width = 1

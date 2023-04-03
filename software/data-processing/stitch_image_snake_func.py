@@ -182,7 +182,8 @@ def generate_statistics(image_name, directory_path, all_def_coor):
         defect_coors.append([median_x_coordinate, median_y_coordinate])
         if all_def_coor:
             for pixel in defect:
-                defect_coors_and_size.append(pixel)
+                new_pixel = np.append(pixel, "BAD")
+                defect_coors_and_size.append(new_pixel)
 
     # Converts the sizes and coordinates to NumPy arrays for sorting
     defect_sizes_nparray = np.array(defect_sizes)
@@ -210,8 +211,8 @@ def generate_statistics(image_name, directory_path, all_def_coor):
 
     # Outputs data to CSV
     # Headers for CSV file
-    csv_defect_headers = ['x', 'y', 'size']
-    csv_defect_headers_all_def_coor = ['x', 'y']
+    csv_defect_headers = ['x,y,size']
+    csv_defect_headers_all_def_coor = ['x', 'y', 'OK']
     csv_overall_headers = ['X', 'Y', '#']
     overall_stats = [str(x_length), str(y_length), str(number_of_defects)]
 
@@ -244,7 +245,7 @@ def generate_statistics(image_name, directory_path, all_def_coor):
     # print("\nStoring data in output file: '" + final_output_data_path + "'...\n")
 
     with open(final_output_data_path, 'w') as csvfile:  # Writes the headers and statistics to the file
-        csvwriter = csv.writer(csvfile)
+        csvwriter = csv.writer(csvfile, delimiter=',')
         csvwriter.writerow(csv_overall_headers)
         csvwriter.writerow(overall_stats)
         if all_def_coor:

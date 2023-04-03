@@ -44,3 +44,11 @@ Requirements
 
 - Four parameters for vignes code 
 - Folder path:
+
+
+
+-------------------------------------------------------------
+
+# pip install kivy-garden   
+# pip install matplotlib
+# garden install matplotlib --kivy
