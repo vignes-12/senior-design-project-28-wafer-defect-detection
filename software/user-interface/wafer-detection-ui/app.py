@@ -1,4 +1,7 @@
 import gc
+import os
+
+os.environ['KIVY_IMAGE'] = 'pil'
 
 from kivy.app import App
 from kivy.uix.label import Label
@@ -37,7 +40,8 @@ from kivy.clock import Clock
 
 from modules.pages.full_scan import FullScan
 
-
+# Camera Python script
+from CameraCode import *
 
 gc.disable()
 
@@ -130,8 +134,10 @@ class ContentNavigationDrawer(BoxLayout):
         super(ContentNavigationDrawer, self).__init__(**kwargs)
 
 class MainApp(MDApp):
+    #save_image()
+    #save_image()
 
-
+    
     def build(self):
         #change App colors here
         self.title = 'Wafer Detection GUI'
@@ -145,7 +151,16 @@ class MainApp(MDApp):
 
         return Builder.load_string(KV)
     
-  
-
 if __name__ == "__main__":
     MainApp().run()
+
+
+
+
+
+
+
+
+
+
+

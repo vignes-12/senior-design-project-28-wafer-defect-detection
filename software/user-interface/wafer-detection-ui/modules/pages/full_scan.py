@@ -145,7 +145,8 @@ class FullScan(MDBoxLayout):
                             self.ids.folder_name_field.text, 
                             self.ids.image_name_field.text,
                             self.ids.xval_field.text,
-                            self.ids.yval_field.text,)
+                            self.ids.yval_field.text)
+
 
 
         

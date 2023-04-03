@@ -282,3 +282,7 @@ def generate_statistics(image_name, directory_path, all_def_coor):
 #                 user_done = input('Exit? (Y/N)\n').upper()
 #                 if user_done == 'Y':
 #                     always = False
+
+
+
+#stitch_images_snake("C:\\Project-28-Error-Detection-on-Wafer-Surfaces\\software\\user-interface\\processed-stitched-snake", "getSnapshot", "final_img", 40, 40)

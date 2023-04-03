@@ -115,6 +115,8 @@ class MotorControls(BoxLayout):
     def move_up(self, instance):
         print("Moving up...")
         increment = float(increment_input.text())
+        command = f"G91\n"
+        ser.write(command.encode())
         command = f"G0 Y{increment}\n"
         ser.write(command.encode())
 
@@ -122,6 +124,8 @@ class MotorControls(BoxLayout):
     def move_down(self, instance):
         print("Moving down...")
         increment = float(increment_input.text())
+        command = f"G91\n"
+        ser.write(command.encode())
         command = f"G0 Y{-increment}\n"
         ser.write(command.encode())
 
@@ -129,6 +133,8 @@ class MotorControls(BoxLayout):
     def move_left(self, instance):
         print("Moving left...")
         increment = float(increment_input.text())
+        command = f"G91\n"
+        ser.write(command.encode())
         command = f"G0 X{-increment}\n"
         ser.write(command.encode())
 
@@ -136,6 +142,8 @@ class MotorControls(BoxLayout):
     def move_right(self, instance):
         print("Moving right...")
         increment = float(increment_input.text())
+        command = f"G91\n"
+        ser.write(command.encode())
         command = f"G0 X{increment}\n"
         ser.write(command.encode())
 

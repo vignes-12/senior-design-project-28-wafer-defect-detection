@@ -1,7 +1,7 @@
 import serial
 import time  
 
-ser1 = serial.Serial('COM3', 115200)
+ser1 = serial.Serial('COM4', 115200)
 time.sleep(1)
 
 run = True;
