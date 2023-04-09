@@ -1,4 +1,7 @@
 import gc
+import os
+
+os.environ['KIVY_IMAGE'] = 'pil'
 
 from kivy.app import App
 from kivy.uix.label import Label
@@ -23,6 +26,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.gridlayout import GridLayout
 
 from modules.dashboard import MainDashboard
+from modules.pages.wafer_map_screen import WaferMap
 
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
@@ -35,8 +39,6 @@ from kivy.uix.spinner import Spinner
 from kivy.clock import Clock
 
 from modules.pages.full_scan import FullScan
-
-
 
 gc.disable()
 
@@ -96,9 +98,8 @@ Screen:
             Screen:
                 name: "wafer_map"
 
-                MDLabel:
-                    text: "Screen 2"
-                    halign: "center"
+                WaferMap:
+                    launched: True
             
             Screen:
                 name: "full_scan"
@@ -106,7 +107,6 @@ Screen:
                 FullScan:
 
                 
-
             Screen:
                 name: "others"
 
@@ -131,8 +131,10 @@ class ContentNavigationDrawer(BoxLayout):
         super(ContentNavigationDrawer, self).__init__(**kwargs)
 
 class MainApp(MDApp):
+    #save_image()
+    #save_image()
 
-
+    
     def build(self):
         #change App colors here
         self.title = 'Wafer Detection GUI'
@@ -146,7 +148,15 @@ class MainApp(MDApp):
 
         return Builder.load_string(KV)
     
-  
-
 if __name__ == "__main__":
     MainApp().run()
+
+
+
+
+
+
+
+
+
+
