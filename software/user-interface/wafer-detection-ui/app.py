@@ -100,9 +100,6 @@ Screen:
             Screen:
                 name: "wafer_map"
 
-                # WaferMap:
-                #     launched: True
-            
             Screen:
                 name: "full_scan"
 
@@ -152,14 +149,3 @@ class MainApp(MDApp):
     
 if __name__ == "__main__":
     MainApp().run()
-
-
-
-
-
-
-
-
-
-
-
