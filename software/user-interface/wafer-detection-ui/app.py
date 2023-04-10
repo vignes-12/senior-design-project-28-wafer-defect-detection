@@ -40,6 +40,9 @@ from kivy.clock import Clock
 
 from modules.pages.full_scan import FullScan
 
+# Camera Python script
+from CameraCode import *
+
 gc.disable()
 
 KV = '''
@@ -98,8 +101,8 @@ Screen:
             Screen:
                 name: "wafer_map"
 
-                WaferMap:
-                    launched: True
+                # WaferMap:
+                #    launched: True
             
             Screen:
                 name: "full_scan"
@@ -150,13 +153,3 @@ class MainApp(MDApp):
     
 if __name__ == "__main__":
     MainApp().run()
-
-
-
-
-
-
-
-
-
-
