@@ -102,7 +102,7 @@ Screen:
                 name: "wafer_map"
 
                 # WaferMap:
-                #    launched: True
+                #     launched: True
             
             Screen:
                 name: "full_scan"
