@@ -153,14 +153,3 @@ class MainApp(MDApp):
     
 if __name__ == "__main__":
     MainApp().run()
-
-
-
-
-
-
-
-
-
-
-
