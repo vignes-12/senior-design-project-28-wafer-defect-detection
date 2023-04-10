@@ -52,3 +52,6 @@ Requirements
 # pip install kivy-garden   
 # pip install matplotlib
 # garden install matplotlib --kivy
+
+pip install pandas
+
