@@ -4,6 +4,8 @@ import os
 import cv2
 import time
 from PIL import Image
+
+
 # from matplotlib import pyplot as plt
 
 # print("Welcome to the stitch wafer image algorithm!")
@@ -125,6 +127,26 @@ def save_image(image, image_name, image_path):
 
     return True
 
+
+def get_coordinates(coordinates, image):
+    mask = np.zeros_like(image)
+    cv2.drawContours(mask, [coordinates], 0, 255, -1)
+    points = np.where(mask == 255)
+    points = np.column_stack((points[1], points[0]))
+    return points
+
+    # coordinates = [coord[0] for coord in coordinates]
+    # x_min = min(coordinates, key=lambda x: x[0])[0]
+    # x_max = max(coordinates, key=lambda x: x[0])[0]
+    # y_min = min(coordinates, key=lambda x: x[1])[1]
+    # y_max = max(coordinates, key=lambda x: x[1])[1]
+    # result = []
+    # for i in range(x_min, x_max + 1):
+    #     for j in range(y_min, y_max + 1):
+    #         result.append([i, j])
+    # return result
+
+
 def generate_statistics(image_name, directory_path, all_def_coor):
     """
     Generates and displays relevant statistics of a user-inputted image.
@@ -150,7 +172,7 @@ def generate_statistics(image_name, directory_path, all_def_coor):
     th, threshed = cv2.threshold(processed_image_data, 225, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
 
     # Connects defects together to form contours in order to count them
-    counts = cv2.findContours(threshed, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)[-2]
+    counts = cv2.findContours(threshed, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)[-2]
 
     min_defect_size = 20  # minimum defect size (may need to change this value)
     max_defect_size = 100000  # maximum defect size (may need to change this value)
@@ -166,6 +188,7 @@ def generate_statistics(image_name, directory_path, all_def_coor):
         if min_defect_size < defect_pixels < max_defect_size:
             defect_sizes.append(defect_pixels)
             defect_pixel_counter_contour += defect_pixels
+            count = get_coordinates(count, processed_image_data)
             defects.append(count)
 
     # calculates percent error between counting in array and contours
@@ -174,15 +197,16 @@ def generate_statistics(image_name, directory_path, all_def_coor):
     largest_defect_size = round(max(defect_sizes))  # gets largest defect size
 
     defect_coors_and_size = []
+    all_defect_coors = []
 
     # Calculates the x and y coordinates for all defects
     for defect in defects:
-        median_x_coordinate = round(sum(pixel[0][0] for pixel in defect) / len(defect))
-        median_y_coordinate = round(sum(pixel[0][1] for pixel in defect) / len(defect))
+        median_x_coordinate = round(sum(pixel[0] for pixel in defect) / len(defect))
+        median_y_coordinate = round(sum(pixel[1] for pixel in defect) / len(defect))
         defect_coors.append([median_x_coordinate, median_y_coordinate])
-        if all_def_coor:
-            for pixel in defect:
-                defect_coors_and_size.append(pixel)
+        for pixel in defect:
+            new_pixel = np.append(pixel, "BAD")
+            all_defect_coors.append(new_pixel)
 
     # Converts the sizes and coordinates to NumPy arrays for sorting
     defect_sizes_nparray = np.array(defect_sizes)
@@ -194,9 +218,7 @@ def generate_statistics(image_name, directory_path, all_def_coor):
     defect_pixel_array_sorted = defect_sizes_nparray[sort][::-1]
     defect_coors_sorted = defect_coors_nparray[sort][::-1]
 
-    if not all_def_coor:
-        defect_coors_and_size = np.hstack((defect_coors_sorted,
-                                           np.atleast_2d(defect_pixel_array_sorted).T))
+    defect_coors_and_size = np.hstack((defect_coors_sorted, np.atleast_2d(defect_pixel_array_sorted).T))
 
     # Prints all relevant statistics below
     # print(f'Length of image: {x_length}')
@@ -211,7 +233,7 @@ def generate_statistics(image_name, directory_path, all_def_coor):
     # Outputs data to CSV
     # Headers for CSV file
     csv_defect_headers = ['x', 'y', 'size']
-    csv_defect_headers_all_def_coor = ['x', 'y']
+    csv_all_def_coor_headers = ['x', 'y', 'OK']
     csv_overall_headers = ['X', 'Y', '#']
     overall_stats = [str(x_length), str(y_length), str(number_of_defects)]
 
@@ -219,41 +241,49 @@ def generate_statistics(image_name, directory_path, all_def_coor):
     # output_path = os.path.join(DATASET_DATADIR, "output-data")
     # output_path_with_mag = os.path.join(output_path, magnification)
 
-    if not all_def_coor:
-        output_data_path = os.path.join(directory_path, image_name)
-    else:
-        output_data_path = os.path.join(directory_path, image_name + "(all_def_coor)")
+    output_data_path = os.path.join(directory_path, image_name + "(def_center_and_size)")
+    output_data_path_coors = os.path.join(directory_path, image_name + "(all_def_coor)")
 
-    output_data_dupe_path = ""
+    final_output_data_path_coors = final_output_path(output_data_path_coors)
 
-    is_output_dupe = False  # Flag for checking if output is a duplicate copy
+    # print("\nStoring data in output file: '" + final_output_data_path + "'...\n")
 
-    if os.path.exists(output_data_path + ".csv"):   # If the file exists, increment a counter to find a file that
-        is_output_dupe = True                       # does not exist
-        counter = 1
-        output_data_dupe_path = (output_data_path + "_{}").format(str(counter))
-        while os.path.exists(output_data_dupe_path + ".csv"):
-            counter += 1
-            output_data_dupe_path = (output_data_path + "_{}").format(str(counter))
+    with open(final_output_data_path_coors, 'w') as csvfile:  # Writes the headers and statistics to the file
+        csvwriter = csv.writer(csvfile, delimiter=',')
+        csvwriter.writerow(csv_overall_headers)
+        csvwriter.writerow(overall_stats)
+        csvwriter.writerow(csv_all_def_coor_headers)
+        csvwriter.writerows(all_defect_coors)
 
-    if not is_output_dupe:                          # Gets the name for the file
-        final_output_data_path = output_data_path + ".csv"
-    else:
-        final_output_data_path = output_data_dupe_path + ".csv"
+    final_output_data_path = final_output_path(output_data_path)
 
     # print("\nStoring data in output file: '" + final_output_data_path + "'...\n")
 
     with open(final_output_data_path, 'w') as csvfile:  # Writes the headers and statistics to the file
-        csvwriter = csv.writer(csvfile)
-        csvwriter.writerow(csv_overall_headers)
-        csvwriter.writerow(overall_stats)
-        if all_def_coor:
-            csvwriter.writerow(csv_defect_headers_all_def_coor)
-        else:
-            csvwriter.writerow(csv_defect_headers)
+        csvwriter = csv.writer(csvfile, delimiter=',')
+        csvwriter.writerow(csv_defect_headers)
         csvwriter.writerows(defect_coors_and_size)
 
 
+def final_output_path(output_path):
+    output_data_dupe_path = ""
+
+    is_output_dupe = False  # Flag for checking if output is a duplicate copy
+
+    if os.path.exists(output_path + ".csv"):  # If the file exists, increment a counter to find a file that
+        is_output_dupe = True  # does not exist
+        counter = 1
+        output_data_dupe_path = (output_path + "_{}").format(str(counter))
+        while os.path.exists(output_data_dupe_path + ".csv"):
+            counter += 1
+            output_data_dupe_path = (output_path + "_{}").format(str(counter))
+
+    if not is_output_dupe:  # Gets the name for the file
+        final_output_data_path = output_path + ".csv"
+    else:
+        final_output_data_path = output_data_dupe_path + ".csv"
+
+    return final_output_data_path
 
 # while always:
 #     directory_name = input("What directory would you like to store all images for stitching into?").upper()
@@ -282,7 +312,3 @@ def generate_statistics(image_name, directory_path, all_def_coor):
 #                 user_done = input('Exit? (Y/N)\n').upper()
 #                 if user_done == 'Y':
 #                     always = False
-
-
-
-#stitch_images_snake("C:\\Project-28-Error-Detection-on-Wafer-Surfaces\\software\\user-interface\\processed-stitched-snake", "getSnapshot", "final_img", 40, 40)
