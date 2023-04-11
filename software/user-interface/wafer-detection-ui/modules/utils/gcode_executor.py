@@ -54,7 +54,7 @@ class GCodeExecutor(object):
         #while(run):
             #inp = input("Input your wafer size in in (s x s): ")
         dimension = int(inp) * 2.54
-        fov = 1
+        fov = 7
         
         w_move = dimension * 10
         l_move = dimension * 10
