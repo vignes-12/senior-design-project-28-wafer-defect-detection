@@ -7,6 +7,7 @@ Sample code to capture an image from a Pixelink camera and save the encoded imag
 from pixelinkWrapper import *
 from ctypes import *
 import os
+import cv2
 
 #Picture = 0 # name of image
 
@@ -42,11 +43,21 @@ def get_snapshot(hCamera, imageFormat, fileName):
             #
             # Do any image processing here
             #
-            
+
+            # Need to convert raw image to format that cv2 can process
+            # And do something similar to this
+
+            # img_array = cv2.imread(ret[1], cv2.IMREAD_GRAYSCALE)  # converts image to grayscale
+            # Need to define clean wafer image
+            # processed = cv2.subtract(clean_img_array, img_array)  # subtracts the defective wafer with clean one
+            # processed = cv2.bitwise_not(processed)  # inverts the color so defects are black in color
+            # (thresh, processed) = cv2.threshold(processed, 225, 255, cv2.THRESH_BINARY)  # produces black and white image
+            # Processed image should be in processed variable
+
             # Encode the raw image into something displayable
             ret = PxLApi.formatImage(rawImage, frameDescriptor, imageFormat)
             if SUCCESS == ret[0]:
-                formatedImage = ret[1]
+                formatedImage = ret[1] # put processed here if including image processing
                 # Save formated image into a file
                 if save_image_to_file(fileName, formatedImage) == SUCCESS:
                     return SUCCESS

@@ -1,12 +1,14 @@
 import serial
 import io
 import time
+import csv
 # Camera Python script
 from CameraCode import *
 # Uncomment this line
 # ser1 = serial.Serial('COM3', 115200)
 # Comment this line during test
 from modules.utils.popup import *
+
 
 # global ser1
 
@@ -48,18 +50,19 @@ class GCodeExecutor(object):
     def run_auto(self):
         inp = self.input_wafer_size
         print(inp)
-        run = True;
+        run = True
         #while(run):
-            #inp = input("Input your wafer size in cm (s x s): ")
-        dimension = int(inp)
+            #inp = input("Input your wafer size in in (s x s): ")
+        dimension = int(inp) * 2.54
+        fov = 1
         
         w_move = dimension * 10
         l_move = dimension * 10
         
         print("performing homing procedure...verify starting coordinates:")
         
-        x_start = 200 - w_move/2 - 25
-        y_start = 200 + l_move/2 + 40
+        x_start = int(165 - w_move/2)
+        y_start = int(280 + l_move/2)
         print("x_start: ")
         print(x_start)
         print("y_start: ")
@@ -76,11 +79,47 @@ class GCodeExecutor(object):
         
         command = "G90\n"
         ser1.write(command.encode())
+        
+        command = "G0 X170 Y280\n"
+        ser1.write(command.encode())
+        time.sleep(8)
+
+        x_steps = int(w_move / fov)
+        y_steps = int(l_move / fov)
+        total_images = x_steps * y_steps
+
+        with open('auto_run.csv', 'w+', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([x_start, y_start, x_steps, y_steps, total_images, fov])
+
+        file.close
+
+        
+    def continue_auto(self):
+        with open('auto_run.csv', 'r') as file:
+            reader = csv.reader(file, delimiter=',', quotechar='"')
+            for row in reader:
+                x_start = int(row[0])
+                y_start = int(row[1])
+                x_steps = int(row[2])
+                y_steps = int(row[3])
+                total_images = int(row[4])
+                fov = row[5]
+
+        print(x_start)
+        print(y_start)
+        print(x_steps)
+        print(y_steps)
+        print(total_images)
+        print(fov)
+     
+        command = "G90\n"
+        ser1.write(command.encode())
         command = "G0 X" + str(x_start) + " Y" + str(y_start)
         print(command)
         command += "\n"
         ser1.write(command.encode())
-        time.sleep(8)
+        time.sleep(2)
 
         # command = "G90\n"
         # ser1.write(command.encode())
@@ -95,23 +134,25 @@ class GCodeExecutor(object):
         #     exit()
         #break
         picture = 0    
-        for y in range(l_move):
-            for x in range(w_move):
+        for y in range(y_steps):
+            for x in range(x_steps):
                 picture += 1 
                 save_image(picture)
                 
                 command = "G0 X"
                 if(y%2 == 1):
-                    command += "-1"
+                    command += "-" + str(fov)
                 else:
-                    command += "1"
+                    command += str(fov)
                 print(command)
                 command += "\n"
                 ser1.write(command.encode())
                 
                 #time.sleep(0.3)
-                
-            command = "G0 Y-1\n"
+            
+            picture += 1 
+            save_image(picture)
+            command = "G0 Y-" + str(fov) +"\n"
             print(command)
             ser1.write(command.encode())
-            time.sleep(0.3)
+            #time.sleep(0.3)

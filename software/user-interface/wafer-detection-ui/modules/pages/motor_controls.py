@@ -26,6 +26,8 @@ class MotorControls(BoxLayout):
         # Create the grid layout widget
         self.grid_layout = GridLayout(cols=2, row_force_default=True, row_default_height=40)
 
+        self.label2 = Label(text='')
+        self.grid_layout.add_widget(self.label2)
         # Add Input button inside a grid layout
         self.label = Label(text='Enter increment movement (mm):')
         self.text_input_incr = TextInput(size_hint=(None, None), size=(400, 50))

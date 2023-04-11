@@ -57,7 +57,8 @@ class InputControls(BoxLayout):
         #self.layout.add_widget(self.button_port)
 
         # self.layout1 = GridLayout(cols=3, row_force_default=True, row_default_height=40, padding=(20))
-
+        self.label2 = Label(text='')
+        self.layout.add_widget(self.label2)
         self.label = Label(text='Enter increment (mm):')
         self.text_input_incr = TextInput(size_hint_y=None,size_hint_x=None, height='32dp', size=(100, 35), multiline = False)
         self.layout.add_widget(self.label)
@@ -82,11 +83,12 @@ class InputControls(BoxLayout):
         self.layout.add_widget(self.button_home)
    
         # Add input buttons
-        self.layout2 = GridLayout(rows=4, cols=2, row_force_default=True, row_default_height=40, padding=(20))
+        self.layout2 = GridLayout(rows=4, cols=3, row_force_default=True, row_default_height=40, padding=(20))
 
         # Add a label
         self.layout2.add_widget(Label(text='Switch Mode (Relative)'))
-
+        self.layout2.add_widget(Label(text=''))
+        self.layout2.add_widget(Label(text=''))
         # Add a switch
         #self.switch_mode = Switch(active=False)
         #self.switch_mode.bind(active=self.on_switch_active)
@@ -98,6 +100,7 @@ class InputControls(BoxLayout):
         self.text_input_x = TextInput(size_hint_y=None,size_hint_x=None, height='32dp', size=(50, 35), multiline = False)
         self.layout2.add_widget(self.label_x)
         self.layout2.add_widget(self.text_input_x)
+        self.layout2.add_widget(Label(text=''))
 
         self.label_y = Label(text='Enter Y:')
         self.text_input_y = TextInput(size_hint_y=None,size_hint_x=None, height='32dp', size=(50, 35), multiline = False)
@@ -170,7 +173,7 @@ class InputControls(BoxLayout):
         self.layout4 = GridLayout(rows=4, cols=2, row_force_default=True, row_default_height=40, padding=(20))
 
 
-        self.label_port_auto = Label(text='Wafer Size (cm)')
+        self.label_port_auto = Label(text='Wafer Size (inches)')
         self.text_input_port_auto = TextInput(size_hint_y=None,size_hint_x=None, height='32dp', size=(300, 35), multiline = False)
         self.button_port_auto = Button(text='Run Auto', size_hint=(None, None), size=(100, 35))
         self.button_port_auto.bind(on_press=self.run_auto)
@@ -309,7 +312,8 @@ class InputControls(BoxLayout):
         except:
             display_error(4)
 
-    def continue_auto(self, instance):
+    def continue_auto(self, instance):       
+        #self.gcodeExecutor.continue_auto()
         try:
             self.gcodeExecutor.continue_auto()
         except:
