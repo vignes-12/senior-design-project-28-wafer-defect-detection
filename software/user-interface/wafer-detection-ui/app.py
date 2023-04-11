@@ -101,8 +101,8 @@ Screen:
             Screen:
                 name: "wafer_map"
 
-                # WaferMap:
-                #     launched: True
+                WaferMap:
+                    launched: True
             
             Screen:
                 name: "full_scan"
