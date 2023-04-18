@@ -163,7 +163,7 @@ def save_image_to_file(fileName, formatedImage):
     if not os.path.exists(CAMERA_DIR):
         os.makedirs(CAMERA_DIR)
 
-    filepath = CAMERA_DIR + fileName
+    filepath = fileName
     # Open a file for binary write
     file = open(filepath, "wb")
     if None == file:
@@ -177,9 +177,9 @@ def save_image_to_file(fileName, formatedImage):
     return FAILURE
 
 
-def save_image(pic):
+def save_image(directory, pic):
     
-    filenameJpeg = str(pic) + ".jpeg" 
+    filenameJpeg = directory + str(pic) + ".jpeg" 
 
     # Tell the camera we want to start using it.
 	# NOTE: We're assuming there's only one camera.

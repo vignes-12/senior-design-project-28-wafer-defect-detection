@@ -20,6 +20,11 @@ from kivymd.icon_definitions import md_icons
 from kivy.graphics import Color, Ellipse
 from modules.utils.popup import *
 
+from modules.utils.vignes_test import processor
+
+import os
+
+
 
 
 class InputControls(BoxLayout):
@@ -31,9 +36,9 @@ class InputControls(BoxLayout):
 
         # create a box layout
         # self.orientation = 'vertical'
-        self.orientation = 'vertical'
+        self.orientation = 'horizontal'
 
-        self.layout = GridLayout(rows=3, cols=3, spacing = 0, row_force_default=True, row_default_height=40, padding=(20))
+        self.layout_connect = GridLayout(rows=3, cols=3, spacing = 0, row_force_default=True, row_default_height=40, padding=(20))
         self.label_port = Label(text='Serial Port')
 
         self.dropdown = DropDown()
@@ -52,17 +57,17 @@ class InputControls(BoxLayout):
         self.text_input_port = TextInput(size_hint_y=None,size_hint_x=None, height='32dp', size=(300, 35), multiline = False)
         #self.button_port = Button(text='Connect', size_hint=(None, None), size=(100, 35))
         #self.button_port.bind(on_press=self.connect_serial)
-        self.layout.add_widget(self.label_port)
-        self.layout.add_widget(self.mainbutton)
+        self.layout_connect.add_widget(self.label_port)
+        self.layout_connect.add_widget(self.mainbutton)
         #self.layout.add_widget(self.button_port)
 
         # self.layout1 = GridLayout(cols=3, row_force_default=True, row_default_height=40, padding=(20))
         self.label2 = Label(text='')
-        self.layout.add_widget(self.label2)
+        self.layout_connect.add_widget(self.label2)
         self.label = Label(text='Enter increment (mm):')
         self.text_input_incr = TextInput(size_hint_y=None,size_hint_x=None, height='32dp', size=(100, 35), multiline = False)
-        self.layout.add_widget(self.label)
-        self.layout.add_widget(self.text_input_incr)
+        self.layout_connect.add_widget(self.label)
+        self.layout_connect.add_widget(self.text_input_incr)
         
 
         # # create label and slider widgets
@@ -80,15 +85,23 @@ class InputControls(BoxLayout):
 
         self.button_home = Button(text='Home', size_hint=(None, None), size=(100, 35))
         self.button_home.bind(on_press=self.home_device)
-        self.layout.add_widget(self.button_home)
+        self.layout_connect.add_widget(self.button_home)
+
+        self.button_display = Button(text='Open PixeLINK', size_hint=(None, None), size=(100, 35))
+        self.button_display.bind(on_press=self.open_PL)
+        self.layout_connect.add_widget(self.button_display)
+
+        self.process_button = Button(text='PROCESS TEST', size_hint=(None, None), size=(100, 35))
+        self.process_button.bind(on_press=self.process_test)
+        self.layout_connect.add_widget(self.process_button)
    
         # Add input buttons
-        self.layout2 = GridLayout(rows=4, cols=3, row_force_default=True, row_default_height=40, padding=(20))
+        self.absolute_position = GridLayout(rows=4, cols=3, row_force_default=True, row_default_height=40, padding=(20))
 
         # Add a label
-        self.layout2.add_widget(Label(text='Switch Mode (Relative)'))
-        self.layout2.add_widget(Label(text=''))
-        self.layout2.add_widget(Label(text=''))
+        self.absolute_position.add_widget(Label(text='Movement Controls'))
+        self.absolute_position.add_widget(Label(text=''))
+        self.absolute_position.add_widget(Label(text=''))
         # Add a switch
         #self.switch_mode = Switch(active=False)
         #self.switch_mode.bind(active=self.on_switch_active)
@@ -98,25 +111,25 @@ class InputControls(BoxLayout):
         # Add X & Y positions
         self.label_x = Label(text='Enter X:')
         self.text_input_x = TextInput(size_hint_y=None,size_hint_x=None, height='32dp', size=(50, 35), multiline = False)
-        self.layout2.add_widget(self.label_x)
-        self.layout2.add_widget(self.text_input_x)
-        self.layout2.add_widget(Label(text=''))
+        self.absolute_position.add_widget(self.label_x)
+        self.absolute_position.add_widget(self.text_input_x)
+        self.absolute_position.add_widget(Label(text=''))
 
         self.label_y = Label(text='Enter Y:')
         self.text_input_y = TextInput(size_hint_y=None,size_hint_x=None, height='32dp', size=(50, 35), multiline = False)
-        self.layout2.add_widget(self.label_y)
-        self.layout2.add_widget(self.text_input_y)
+        self.absolute_position.add_widget(self.label_y)
+        self.absolute_position.add_widget(self.text_input_y)
 
         # Button to move to absolute position
         self.button_movs_abs = Button(text='Move to (X,Y)', size_hint=(None, None), size=(100, 35))
-        self.layout2.add_widget(self.button_movs_abs)
+        self.absolute_position.add_widget(self.button_movs_abs)
         self.button_movs_abs.bind(on_press=self.move_abs)
 
         # Button to move for all movement positions
 
         # self.temp_grid_layout = GridLayout(rows=1, cols=2, row_force_default=True, row_default_height=40, padding=(20))
 
-        self.layout3 = FloatLayout()
+        self.layout_arrow = FloatLayout()
 
         # self.temp_layout = BoxLayout(orientation='vertical')
         
@@ -129,37 +142,37 @@ class InputControls(BoxLayout):
         self.button_up = MDIconButton(icon="arrow-up-bold", pos_hint={'center_x': 0.5, 'top': 0.9})
         # label1 = Label(text="Y+", , size_hint_y=0.2)
         # self.button_up.add_widget(label1)
-        self.layout3.add_widget(self.button_up)
+        self.layout_arrow.add_widget(self.button_up)
         self.button_up.bind(on_press=self.move_up)
 
         self.button_right = MDIconButton(icon="arrow-right-bold", pos_hint={'right': 0.6, 'top': 0.7})
         # label2 = MDLabel(text="X+", halign="auto",font_size="10sp")
         # self.button_right.add_widget(label2)
-        self.layout3.add_widget(self.button_right)
+        self.layout_arrow.add_widget(self.button_right)
         self.button_right.bind(on_press=self.move_right)
 
         self.button_left = MDIconButton(icon="arrow-left-bold", pos_hint={'x': 0.4, 'top': 0.7})
         # label3 = MDLabel(text="X-", halign="auto",font_size="10sp")
         # self.button_left.add_widget(label3)
-        self.layout3.add_widget(self.button_left)
+        self.layout_arrow.add_widget(self.button_left)
         self.button_left.bind(on_press=self.move_left)
         
         self.button_down = MDIconButton(icon="arrow-down-bold", pos_hint={'center_x': 0.5, 'top': 0.5})
         # label4 = MDLabel(text="Y-", halign="auto",font_size="10sp")
         # self.button_down.add_widget(label4)
-        self.layout3.add_widget(self.button_down)
+        self.layout_arrow.add_widget(self.button_down)
         self.button_down.bind(on_press=self.move_down)
 
         self.button_z_up = MDIconButton(icon="arrow-up-bold", pos_hint={'center_x': 0.3, 'top': 0.9})
         # label1 = Label(text="Y+", , size_hint_y=0.2)
         # self.button_up.add_widget(label1)
-        self.layout3.add_widget(self.button_z_up)
+        self.layout_arrow.add_widget(self.button_z_up)
         self.button_z_up.bind(on_press=self.move_z_up)
 
         self.button_z_down = MDIconButton(icon="arrow-down-bold", pos_hint={'center_x': 0.3, 'top': 0.5})
         # label1 = Label(text="Y+", , size_hint_y=0.2)
         # self.button_up.add_widget(label1)
-        self.layout3.add_widget(self.button_z_down)
+        self.layout_arrow.add_widget(self.button_z_down)
         self.button_z_down.bind(on_press=self.move_z_down)
 
         # Add to temp grid layout
@@ -170,33 +183,55 @@ class InputControls(BoxLayout):
         
 #auto button with input wafer size
 
-        self.layout4 = GridLayout(rows=4, cols=2, row_force_default=True, row_default_height=40, padding=(20))
-
-
+        self.layout_auto = GridLayout(rows=4, cols=2, row_force_default=True, row_default_height=40, padding=(20))
+        
         self.label_port_auto = Label(text='Wafer Size (inches)')
         self.text_input_port_auto = TextInput(size_hint_y=None,size_hint_x=None, height='32dp', size=(300, 35), multiline = False)
         self.button_port_auto = Button(text='Run Auto', size_hint=(None, None), size=(100, 35))
         self.button_port_auto.bind(on_press=self.run_auto)
-        self.layout4.add_widget(self.label_port_auto)
-        self.layout4.add_widget(self.text_input_port_auto)
-        self.layout4.add_widget(self.button_port_auto)
+        self.layout_auto.add_widget(self.label_port_auto)
+        self.layout_auto.add_widget(self.text_input_port_auto)
+        self.layout_auto.add_widget(self.button_port_auto)
 
         self.button_port_cont = Button(text='Continue Auto', size_hint=(None, None), size=(100, 35))
         self.button_port_cont.bind(on_press=self.continue_auto)
-        self.layout4.add_widget(self.button_port_cont)
+        self.layout_auto.add_widget(self.button_port_cont)
+
+        self.label_dir = Label(text='Directory to Use')
+        self.text_input_dir = TextInput(size_hint_y=None,size_hint_x=None, height='32dp', size=(300, 35), multiline = False)
+        self.layout_auto.add_widget(self.label_dir)
+        self.layout_auto.add_widget(self.text_input_dir)
+
+        self.layout_right = GridLayout(rows=4, cols=1, row_force_default=False, row_default_height=40, padding=(20))
+        #self.layout_right.orientation = 'vertical'
+        self.layout_left = GridLayout(rows=4, cols=1, row_force_default=True, row_default_height=40, padding=(20))
+        self.layout_right.add_widget(self.layout_connect)
 
 
-        self.add_widget(self.layout)
-        self.add_widget(self.layout2)
+        self.layout_right.add_widget(self.absolute_position)
         # self.add_widget(self.temp_grid_layout)
-        self.add_widget(self.layout3)
-        self.add_widget(self.layout4)
+        self.layout_right.add_widget(self.layout_arrow)
+        self.layout_right.add_widget(self.layout_auto)
+
+        
+        #self.add_widget(self.layout_left)
+        self.add_widget(self.layout_right)
 
 
 
     #-------------------------------------------------------------------------------------
     # on-click functions
     #-------------------------------------------------------------------------------------
+
+    def process_test(self, instance):
+        proc = processor()
+        proc.IMG_DIR = self.text_input_dir.text
+        proc.process_data()
+
+
+
+    def open_PL(self, instance):
+        os.startfile("C:\\Program Files (x86)\\PixeLINK\\Pixelink Capture\\PixelinkCapture.exe")
 
     def on_switch_active(self, switch, value):
         if value:
@@ -307,6 +342,7 @@ class InputControls(BoxLayout):
     # Define a function to run when the auto button is clicked 
     def run_auto(self, instance):
         try:
+            self.gcodeExecutor.directory = self.text_input_dir.text
             self.gcodeExecutor.input_wafer_size = self.text_input_port_auto.text
             self.gcodeExecutor.run_auto()
         except:
@@ -315,9 +351,13 @@ class InputControls(BoxLayout):
     def continue_auto(self, instance):       
         #self.gcodeExecutor.continue_auto()
         try:
-            self.gcodeExecutor.continue_auto()
+            self.gcodeExecutor.directory = self.text_input_dir.text
+            self.gcodeExecutor.input_wafer_size = self.text_input_port_auto.text
+            
         except:
             display_error(4)
+
+        self.gcodeExecutor.continue_auto()
 
 
     #Print values for the sliders

@@ -134,8 +134,6 @@ class MainControls(MDBoxLayout):
     
     def on_run_auto(self, *args):
         print('Inside on_run_auto function...')
-        
-
     
     def on_run_scan(self):
         print('Inside on_run_scale function...')

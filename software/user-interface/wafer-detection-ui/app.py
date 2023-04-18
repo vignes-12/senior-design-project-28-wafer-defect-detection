@@ -12,6 +12,7 @@ from kivy.uix.screenmanager import ScreenManager
 from kivymd.theming import ThemeManager
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.button import Button
+from kivy.core.window import Window
 
 from kivymd.app import MDApp
 
@@ -152,4 +153,6 @@ class MainApp(MDApp):
         return Builder.load_string(KV)
     
 if __name__ == "__main__":
+    #Window.fullscreen = 'auto'
+    #Window.maximize()
     MainApp().run()

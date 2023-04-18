@@ -1,7 +1,10 @@
 import serial
 import io
 import time
+import os
 import csv
+from math import ceil
+from modules.utils.vignes_test import processor
 # Camera Python script
 from CameraCode import *
 # Uncomment this line
@@ -16,6 +19,7 @@ from modules.utils.popup import *
 class GCodeExecutor(object):
 
     ser1 = serial.Serial
+    #self.proc = processor()
 
     def connect_serial(self, port):
         #port = self.port_input
@@ -48,13 +52,21 @@ class GCodeExecutor(object):
     #     ser1.write(command.encode())
 
     def run_auto(self):
+
+        self.directory += '\\'
+        print(self.directory)
+        if not os.path.exists(self.directory):
+            os.makedirs(self.directory)
+            print("creating directory")
+
         inp = self.input_wafer_size
         print(inp)
         run = True
         #while(run):
             #inp = input("Input your wafer size in in (s x s): ")
         dimension = int(inp) * 2.54
-        fov = 7
+        x_fov = 12
+        y_fov = 12*9/16
         
         w_move = dimension * 10
         l_move = dimension * 10
@@ -84,19 +96,31 @@ class GCodeExecutor(object):
         ser1.write(command.encode())
         time.sleep(8)
 
-        x_steps = int(w_move / fov)
-        y_steps = int(l_move / fov)
+        x_steps = ceil(w_move / x_fov)
+        y_steps = int(l_move / y_fov)
         total_images = x_steps * y_steps
 
-        with open('auto_run.csv', 'w+', newline='') as file:
+        with open(self.directory + 'auto_run.csv', 'w+', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow([x_start, y_start, x_steps, y_steps, total_images, fov])
+            writer.writerow([x_start, y_start, x_steps, y_steps, total_images, x_fov, y_fov])
 
         file.close
 
+        print(x_start)
+        print(y_start)
+        print(x_steps)
+        print(y_steps)
+        print(total_images)
+        print(x_fov)
+        print(y_fov)
+
         
     def continue_auto(self):
-        with open('auto_run.csv', 'r') as file:
+        
+        self.directory += '\\'
+        print(self.directory)    
+
+        with open(self.directory + 'auto_run.csv', 'r') as file:
             reader = csv.reader(file, delimiter=',', quotechar='"')
             for row in reader:
                 x_start = int(row[0])
@@ -104,14 +128,16 @@ class GCodeExecutor(object):
                 x_steps = int(row[2])
                 y_steps = int(row[3])
                 total_images = int(row[4])
-                fov = row[5]
+                x_fov = (row[5])
+                y_fov = row[6]
 
         print(x_start)
         print(y_start)
         print(x_steps)
         print(y_steps)
         print(total_images)
-        print(fov)
+        print(x_fov)
+        print(y_fov)
      
         command = "G90\n"
         ser1.write(command.encode())
@@ -128,7 +154,7 @@ class GCodeExecutor(object):
         
         ser1.write(('G91\n').encode())
         
-        print("focus and press continue to begin sequence, q to quit")
+        #print("focus and press continue to begin sequence, q to quit")
         #ser1.write(('G90\n').encode())
         #  if('q' in inp):
         #     exit()
@@ -137,13 +163,13 @@ class GCodeExecutor(object):
         for y in range(y_steps):
             for x in range(x_steps):
                 picture += 1 
-                save_image(picture)
+                save_image(self.directory, picture)
                 
                 command = "G0 X"
                 if(y%2 == 1):
-                    command += "-" + str(fov)
+                    command += "-" + str(x_fov)
                 else:
-                    command += str(fov)
+                    command += str(x_fov)
                 print(command)
                 command += "\n"
                 ser1.write(command.encode())
@@ -151,8 +177,12 @@ class GCodeExecutor(object):
                 #time.sleep(0.3)
             
             picture += 1 
-            save_image(picture)
-            command = "G0 Y-" + str(fov) +"\n"
+            save_image(self.directory, picture)
+            command = "G0 Y-" + str(y_fov) +"\n"
             print(command)
             ser1.write(command.encode())
             #time.sleep(0.3)
+
+        self.proc = processor()
+        self.proc.IMG_DIR = self.directory
+        self.proc.process_data()
