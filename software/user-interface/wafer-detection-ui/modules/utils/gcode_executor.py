@@ -97,7 +97,7 @@ class GCodeExecutor(object):
         time.sleep(8)
 
         x_steps = ceil(w_move / x_fov)
-        y_steps = int(l_move / y_fov)
+        y_steps = ceil(l_move / y_fov)
         total_images = x_steps * y_steps
 
         with open(self.directory + 'auto_run.csv', 'w+', newline='') as file:
@@ -159,12 +159,10 @@ class GCodeExecutor(object):
         #  if('q' in inp):
         #     exit()
         #break
-        picture = 0    
+        picture = 1 
+        save_image(self.directory, picture)   
         for y in range(y_steps):
-            for x in range(x_steps):
-                picture += 1 
-                save_image(self.directory, picture)
-                
+            for x in range(x_steps-1):
                 command = "G0 X"
                 if(y%2 == 1):
                     command += "-" + str(x_fov)
@@ -173,14 +171,15 @@ class GCodeExecutor(object):
                 print(command)
                 command += "\n"
                 ser1.write(command.encode())
-                
+                picture += 1 
+                save_image(self.directory, picture)
                 #time.sleep(0.3)
-            
-            picture += 1 
-            save_image(self.directory, picture)
             command = "G0 Y-" + str(y_fov) +"\n"
             print(command)
             ser1.write(command.encode())
+            if(y != y_steps-1):
+                picture += 1 
+                save_image(self.directory, picture)
             #time.sleep(0.3)
 
         self.proc = processor()

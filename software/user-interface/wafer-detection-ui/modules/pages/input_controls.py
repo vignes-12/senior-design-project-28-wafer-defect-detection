@@ -353,11 +353,14 @@ class InputControls(BoxLayout):
         try:
             self.gcodeExecutor.directory = self.text_input_dir.text
             self.gcodeExecutor.input_wafer_size = self.text_input_port_auto.text
-            
+            self.gcodeExecutor.continue_auto()            
         except:
             display_error(4)
+     
 
-        self.gcodeExecutor.continue_auto()
+        proc = processor()
+        proc.IMG_DIR = self.text_input_dir.text
+        proc.process_data()
 
 
     #Print values for the sliders
