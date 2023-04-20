@@ -45,8 +45,8 @@ Builder.load_string('''
         size_hint_y: 0.9
         # CameraUI:
         #     launched: True
-        # PixelinkCamera:
-        #       launched: True
+        PixelinkCamera:
+            launched: True
         InputControls:
             launched: True
         # MainScreen:

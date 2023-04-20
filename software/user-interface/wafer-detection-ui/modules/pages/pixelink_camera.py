@@ -14,8 +14,8 @@ import cv2
 
 
 class PixelinkCamera(BoxLayout):
-     launched = False
-     def __init__(self, **kwargs):
+    launched = False
+    def __init__(self, **kwargs):
         super(PixelinkCamera, self).__init__(**kwargs)
         # Create a BoxLayout widget to contain the camera preview
         self.orientation = 'vertical';
@@ -35,35 +35,39 @@ class PixelinkCamera(BoxLayout):
         self.add_widget(self.image)
 
         Clock.schedule_interval(self.update_image, 1.0 / 30.0)
-        
 
-        def update_image(self, dt):
-            th = threading.Thread(target=self.grab_continuous, args=[self.cam])
-            # th = threading.Thread(target=self.grab_continuous, args=[cam])
-            th.start()
+    def update_image(self, dt):
+        th = threading.Thread(target=self.grab_continuous, args=[self.cam])
+        # th = threading.Thread(target=self.grab_continuous, args=[cam])
+        th.start()
 
-        def grab_continuous(self, cam):
-            frame_num = 0
-            while cam.is_open():
-                time_0 = time.time()
-                frame_num += 1
-                try:
-                    data = cam.grab()
-                    # use opencv to convert img
-                    img = cv2.cvtColor(data, cv2.COLOR_BAYER_GR2RGB)
-                    buf1 = cv2.flip(img, 0)
-                    buf = buf1.tobytes()
-                    # add image to self.image.texture here
-                    texture = self.image.texture
-                    texture.blit_buffer(
-                        buf, colorfmt='rgb', bufferfmt='ubyte')
+    def grab_continuous(self, cam):
+        frame_num = 0
+        while cam.is_open():
+            time_0 = time.time()
+            frame_num += 1
+            try:
+                data = cam.grab()
+                # use opencv to convert img
+                img = cv2.cvtColor(data, cv2.COLOR_BAYER_GR2RGB)
+                buf1 = cv2.flip(img, 0)
+                buf = buf1.tobytes()
+                # add image to self.image.texture here
+                texture = self.image.texture
+                if texture is None:
+                    # texture = Texture.create(size=(cam.width, cam.height), colorfmt='rgb')
+                    height, width = data.shape
+                    channels = 1
+                    texture = Texture.create(size=(width, height), colorfmt='rgb')
                     self.image.texture = texture
-                except PxLerror as exc:
-                    print('ERROR: grab_continuous:', str(exc))
-                    continue
-                t_dif = time.time() - time_0
-                if data is not None:
-                    print('#: %d, %0.3f sec, shape: %s, mean: %0.3f, std: %0.3f'
-                        % (frame_num, t_dif, repr(data.shape), data.mean(), data.std()))
-                time.sleep(0.001)
-
+                texture.blit_buffer(
+                    buf, colorfmt='rgb', bufferfmt='ubyte')
+                self.image.texture = texture
+            except PxLerror as exc:
+                print('ERROR: grab_continuous:', str(exc))
+                continue
+            t_dif = time.time() - time_0
+            if data is not None:
+                print('#: %d, %0.3f sec, shape: %s, mean: %0.3f, std: %0.3f'
+                    % (frame_num, t_dif, repr(data.shape), data.mean(), data.std()))
+            time.sleep(0.001)
