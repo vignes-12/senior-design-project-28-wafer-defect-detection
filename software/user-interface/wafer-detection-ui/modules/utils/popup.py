@@ -1,5 +1,5 @@
 from kivy.uix.popup import Popup
-from kivy.uix.label import Label
+from  kivy.uix.label import Label
 
 def pop(title_string, error_message):
     popup = Popup(title=title_string, content=Label(text=error_message),size_hint=(None, None), size=(400, 200))
@@ -25,5 +25,3 @@ def display_error(num):
         pop("HOMING FAILED", "Please check your connection and try again.")
     elif num == 4: 
         pop("AUTO SCAN FAILED", "Please check your connection and try again.")
-    elif num == 5: 
-        pop("FILE LOOKUP FAILED", "Please select a file or set directory path and try again.")

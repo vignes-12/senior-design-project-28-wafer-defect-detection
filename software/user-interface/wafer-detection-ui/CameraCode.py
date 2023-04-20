@@ -5,6 +5,7 @@ Sample code to capture an image from a Pixelink camera and save the encoded imag
 """
 
 from pixelinkWrapper import *
+from pixelink import PixeLINK
 from ctypes import *
 import os
 import cv2
@@ -182,7 +183,7 @@ def save_image(directory, pic):
     filenameJpeg = directory + str(pic) + ".jpeg" 
 
     # Tell the camera we want to start using it.
-	# NOTE: We're assuming there's only one camera.
+    # NOTE: We're assuming there's only one camera.
     ret = PxLApi.initialize(0)
     if not PxLApi.apiSuccess(ret[0]):
         return 1
@@ -200,6 +201,15 @@ def save_image(directory, pic):
     PxLApi.uninitialize(hCamera)
     
     return SUCCESS
+
+# def preview():
+#     PxLSetPreviewState()
+
+#    HANDLE hCamera,
+
+#    U32    previewState,
+
+#    HWND*  phWnd );
 
 
 if __name__ == "__main__":

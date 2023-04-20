@@ -45,7 +45,7 @@ class PixelinkApp(App):
         # Update the Image widget with the camera preview image
         def update_image(dt):
             
-            # th = threading.Thread(target=self.grab_continuous, args=[self, cam])
+            # th = threading.Thread(target=self.grab_continuous, args=[self.cam])
             th = threading.Thread(target=self.grab_continuous, args=[cam])
             th.start()
             time_0 = time.time()
