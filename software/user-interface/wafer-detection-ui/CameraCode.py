@@ -202,14 +202,14 @@ def save_image(directory, pic):
     
     return SUCCESS
 
-def preview():
-    PxLSetPreviewState()
+# def preview():
+#     PxLSetPreviewState()
 
-   HANDLE hCamera,
+#    HANDLE hCamera,
 
-   U32    previewState,
+#    U32    previewState,
 
-   HWND*  phWnd );
+#    HWND*  phWnd );
 
 
 if __name__ == "__main__":
