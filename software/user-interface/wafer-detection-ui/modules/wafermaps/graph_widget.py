@@ -1137,7 +1137,6 @@ class MatplotFigure(Widget):
         return total_defects
         
 
-
     def get_current_axes(self):
         return self.axes
         
