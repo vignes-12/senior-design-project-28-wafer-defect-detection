@@ -183,7 +183,7 @@ def save_image(directory, pic):
     filenameJpeg = directory + str(pic) + ".jpeg" 
 
     # Tell the camera we want to start using it.
-	# NOTE: We're assuming there's only one camera.
+    # NOTE: We're assuming there's only one camera.
     ret = PxLApi.initialize(0)
     if not PxLApi.apiSuccess(ret[0]):
         return 1
