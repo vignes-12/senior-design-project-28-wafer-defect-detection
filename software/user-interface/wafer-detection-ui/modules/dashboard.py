@@ -6,6 +6,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.togglebutton import ToggleButton
 from modules.pages.camera import CameraUI
+from modules.pages.pixelink_camera import PixelinkCamera
 from modules.pages.motor_controls import MotorControls
 from modules.pages.input_controls import InputControls
 from kivy.uix.camera import Camera
@@ -44,6 +45,8 @@ Builder.load_string('''
         size_hint_y: 0.9
         # CameraUI:
         #     launched: True
+        # PixelinkCamera:
+        #       launched: True
         InputControls:
             launched: True
         # MainScreen:

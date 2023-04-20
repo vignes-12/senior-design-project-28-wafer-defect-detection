@@ -42,7 +42,7 @@ from kivy.clock import Clock
 from modules.pages.full_scan import FullScan
 
 # Camera Python script
-from CameraCode import *
+#from CameraCode import *
 
 gc.disable()
 
