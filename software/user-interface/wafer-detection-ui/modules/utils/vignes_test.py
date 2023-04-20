@@ -444,5 +444,3 @@ class processor(object):
         stitched_image.save(os.path.join(jpeg_images_src, "stitched.jpeg"))
 
         self.generate_statistics(jpeg_images_src, "stitched")
-
-
