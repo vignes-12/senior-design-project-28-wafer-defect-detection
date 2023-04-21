@@ -46,8 +46,8 @@ from modules.utils.wafer_map_generator import generate_wafer_map
 from modules.wafermaps.graph_widget import MatplotFigure
 from modules.wafermaps.hover_widget import add_hover,HoverVerticalText,InfoHover
 from matplotlib.ticker import FormatStrFormatter
-#from modules.pages.input_controls import *
-from modules.pages.input_controls import UPDATE_MAP
+# from modules.pages.input_controls import *
+# from modules.pages.input_controls import UPDATE_MAP
 
 
 
@@ -151,11 +151,11 @@ class WaferMap(Screen):
         super().__init__(**kwargs)
             
         # Clock.schedule_once(self._finish_init)
-        Clock.schedule_interval(self._finish_init, 3)
+        Clock.schedule_interval(self._finish_init, 180)
 
     def _finish_init(self, dt):
 
-        if(UPDATE_MAP):
+        # if(UPDATE_MAP):
             try:
                 self.figure_wgt.figure = generate_wafer_map()
             except:

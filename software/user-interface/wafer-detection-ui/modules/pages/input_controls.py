@@ -45,7 +45,7 @@ from kivy.clock import Clock
 import time
 
 
-UPDATE_MAP = False
+# UPDATE_MAP = False
 
 
 my_path = "/"    
@@ -434,9 +434,9 @@ class InputControls(BoxLayout):
         except:
             display_error(4)
         
-        UPDATE_MAP = True
-        time.sleep(4)
-        UPDATE_MAP = False
+        # UPDATE_MAP = True
+        # time.sleep(4)
+        # UPDATE_MAP = False
 
 
     #Print values for the sliders
