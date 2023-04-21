@@ -138,7 +138,6 @@ class MainApp(MDApp):
     #save_image()
     #save_image()
 
-    
     def build(self):
         #change App colors here
         self.title = 'Wafer Detection GUI'
@@ -151,8 +150,19 @@ class MainApp(MDApp):
         self.accent_color = [255/255, 64/255, 129/255, 1]
 
         return Builder.load_string(KV)
-    
+            
 if __name__ == "__main__":
     #Window.fullscreen = 'auto'
     #Window.maximize()
-    MainApp().run()
+    
+    try:
+        MainApp().run()
+    except KeyboardInterrupt:
+        print('Caught CTRL+C')
+    finally:
+        print('Closing camera...')
+        torun = False
+        print('Waiting for thread...')
+        #th.join()
+        print('Done.')
+

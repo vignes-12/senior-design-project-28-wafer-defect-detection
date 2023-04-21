@@ -37,7 +37,7 @@ class GCodeExecutor(object):
     def gcode_write(self, command):
         print(f'Writing command {command}')
         
-        print(ser1)
+        # print(ser1)
         ser1.write(command.encode())
         
         
@@ -185,3 +185,5 @@ class GCodeExecutor(object):
         self.proc = processor()
         self.proc.IMG_DIR = self.directory
         self.proc.process_data()
+
+        

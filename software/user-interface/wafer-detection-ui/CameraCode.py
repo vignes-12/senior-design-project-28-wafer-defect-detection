@@ -17,6 +17,35 @@ FAILURE = 1
 
 CAMERA_DIR = "C:\\Project-28-Error-Detection-on-Wafer-Surfaces\\software\\user-interface\\processed-stitched-snake\\getSnapshot\\"
 
+def get_temp_image(hCamera, imageFormat):
+
+    assert 0 != hCamera
+    
+    # Determine the size of buffer we'll need to hold an image from the camera
+    rawImageSize = determine_raw_image_size(hCamera)
+    if 0 == rawImageSize:
+        return FAILURE
+
+    # Create a buffer to hold the raw image
+    rawImage = create_string_buffer(rawImageSize)
+
+    if 0 != len(rawImage):
+        # Capture a raw image. The raw image buffer will contain image data on success. 
+        ret = get_raw_image(hCamera, rawImage)
+        if PxLApi.apiSuccess(ret[0]):
+            frameDescriptor = ret[1]
+            
+            assert 0 != len(rawImage)
+            assert frameDescriptor
+
+            ret = PxLApi.formatImage(rawImage, frameDescriptor, imageFormat)
+            formatedImage = ret[1] # put processed here if including image processing
+            return formatedImage
+                
+                # Save formated image into a file
+                
+
+
 """
 Get a snapshot from the camera, and save to a file.
 """
@@ -202,14 +231,6 @@ def save_image(directory, pic):
     
     return SUCCESS
 
-# def preview():
-#     PxLSetPreviewState()
-
-#    HANDLE hCamera,
-
-#    U32    previewState,
-
-#    HWND*  phWnd );
 
 
 if __name__ == "__main__":

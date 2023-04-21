@@ -46,7 +46,7 @@ Builder.load_string('''
         # CameraUI:
         #     launched: True
         PixelinkCamera:
-            launched: True
+            launched: False
         InputControls:
             launched: True
         # MainScreen:

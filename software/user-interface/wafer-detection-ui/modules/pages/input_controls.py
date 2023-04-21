@@ -32,6 +32,7 @@ from kivy.metrics import dp
 from kivymd.toast import toast
 from modules.utils.stitch_image_snake_func import stitch_images_snake 
 import os
+from modules.utils.vignes_test import processor
 
 
 my_path = "/"    
@@ -172,7 +173,7 @@ class InputControls(BoxLayout):
         self.layout5 = GridLayout(rows=3, cols=1, row_force_default=True, row_default_height=40, padding=(20))
        
         # Create TwoLineListItem
-        two_line_list_item = TwoLineIconListItem(
+        self.two_line_list_item = TwoLineIconListItem(
                         IconLeftWidget(
                             icon="folder"
                         ),
@@ -180,7 +181,7 @@ class InputControls(BoxLayout):
                         on_release=lambda x: self.file_manager_open())
 
         # Add TwoLineListItem to Boxlayout
-        self.layout5.add_widget(two_line_list_item)
+        self.layout5.add_widget(self.two_line_list_item)
      
         # Create the first MDTextField
         self.directory_field = MDTextField(
@@ -367,15 +368,17 @@ class InputControls(BoxLayout):
                 print('Directory path:', directory_path)
                 print('File name:', file_name)
 
-                self.gcodeExecutor.directory = directory_path
-                self.gcodeExecutor.file_name = file_name
+                self.gcodeExecutor.directory = directory_path + '/' + file_name + '/' + self.folder_name_field.text
+                print(self.gcodeExecutor.directory)
                 self.gcodeExecutor.input_wafer_size = self.text_input_port_auto.text
                 self.gcodeExecutor.run_auto()
             else:
                 print('File path is empty')
                 if self.directory_field.text:
-                    self.gcodeExecutor.directory = self.directory_field.text
+                    self.gcodeExecutor.directory = self.directory_field.text + '/' + self.folder_name_field.text
                     self.gcodeExecutor.input_wafer_size = self.text_input_port_auto.text
+                    print(self.gcodeExecutor.directory)
+                    self.gcodeExecutor.run_auto()
                 else:
                     display_error(5)
         except:
@@ -407,7 +410,7 @@ class InputControls(BoxLayout):
             display_error(3)
 
     def file_manager_open(self):
-        self.file_manager.show(my_path)  # output manager to the screen
+        self.file_manager.show_disks()  # output manager to the screen
         self.manager_open = True
 
     def select_path(self, path):
