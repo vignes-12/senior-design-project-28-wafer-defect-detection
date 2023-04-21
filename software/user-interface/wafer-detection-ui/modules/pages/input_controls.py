@@ -33,6 +33,12 @@ from kivymd.toast import toast
 from modules.utils.stitch_image_snake_func import stitch_images_snake 
 import os
 from modules.utils.vignes_test import processor
+from data import wfdata
+
+
+from modules.wafermaps.wafer_map_screen import WaferMap
+
+
 
 
 my_path = "/"    
@@ -360,9 +366,7 @@ class InputControls(BoxLayout):
        
      # Define a function to run when the auto button is clicked 
     def run_auto(self, instance):
-        
         try:
-            
             if hasattr(self, 'file_path') and self.file_path:
                 directory_path, file_name = os.path.split(self.file_path)
                 print('Directory path:', directory_path)
@@ -386,14 +390,36 @@ class InputControls(BoxLayout):
 
     def continue_auto(self, instance):       
         #self.gcodeExecutor.continue_auto()
-        try:
-            self.gcodeExecutor.directory = self.directory_field.text
-            self.gcodeExecutor.input_wafer_size = self.folder_name_field.text
-            
-        except:
-            display_error(4)
+        #try:
+        if hasattr(self, 'file_path') and self.file_path:
+            directory_path, file_name = os.path.split(self.file_path)
+            print('Directory path:', directory_path)
+            print('File name:', file_name)
 
+            self.gcodeExecutor.directory = directory_path + '/' + file_name + '/' + self.folder_name_field.text
+            print(self.gcodeExecutor.directory)
+            self.gcodeExecutor.input_wafer_size = self.text_input_port_auto.text
+        else:
+            print('File path is empty')
+            if self.directory_field.text:
+                self.gcodeExecutor.directory = self.directory_field.text + '/' + self.folder_name_field.text
+                self.gcodeExecutor.input_wafer_size = self.text_input_port_auto.text
+                print(self.gcodeExecutor.directory)
+            else:
+                display_error(5)
         self.gcodeExecutor.continue_auto()
+        WaferMap.update_map()
+
+        # except:
+        #     display_error(4)
+
+        wfdata.set_dir(self.gcodeExecutor.directory)
+
+
+        
+
+
+        
 
 
     #Print values for the sliders
