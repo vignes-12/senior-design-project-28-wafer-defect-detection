@@ -46,6 +46,9 @@ from modules.utils.wafer_map_generator import generate_wafer_map
 from modules.wafermaps.graph_widget import MatplotFigure
 from modules.wafermaps.hover_widget import add_hover,HoverVerticalText,InfoHover
 from matplotlib.ticker import FormatStrFormatter
+#from modules.pages.input_controls import *
+from modules.pages.input_controls import UPDATE_MAP
+
 
 
 Builder.load_string('''
@@ -147,11 +150,16 @@ class WaferMap(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
             
-        Clock.schedule_once(self._finish_init)
+        # Clock.schedule_once(self._finish_init)
+        Clock.schedule_interval(self._finish_init, 3)
 
     def _finish_init(self, dt):
-        
-        self.figure_wgt.figure = generate_wafer_map()
+
+        if(UPDATE_MAP):
+            try:
+                self.figure_wgt.figure = generate_wafer_map()
+            except:
+                print("csv not found")
 
         # ax3=self.figure_wgt.figure.axes[0]
         # self.figure_wgt.register_lines(list(ax3.get_lines()))
@@ -180,9 +188,3 @@ class WaferMap(Screen):
         self.figure_wgt.back()   
     def forward(self):
         self.figure_wgt.forward() 
-    
-
-
-
-
-

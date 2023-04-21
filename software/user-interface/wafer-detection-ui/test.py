@@ -64,6 +64,11 @@ def main():
     #cam.roi = [1776, 1284, 1920, 1080]  # 0,0,2208,3000
     #cam.white_shading = [2.29, 1, 1.5]
     #cam.resolution 
+    fig = plt.figure(figsize=(16, 15))
+    ax = fig.add_subplot(111)
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
+    plt.rcParams['toolbar'] = 'None'
     data = get_temp_image(hCamera, PxLApi.ImageFormat.JPEG)
     #im = Image.frombuffer('L', cam.size, data)
     file = open("test.jpeg", "wb")

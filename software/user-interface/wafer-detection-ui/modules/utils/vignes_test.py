@@ -200,18 +200,18 @@ class processor(object):
 
         defect_pixel_counter_contour = 0  # counts number of defect pixels in image using contours
 
-        defect_sizes = []  # holds all defect sizes in pixels
+        defect_sizes_mm = []  # holds all defect sizes in mms
+        defect_sizes_pixels = []
 
-        defect_coors = []  # holds all coordinates of defects
+        defect_coors_mm = []  # holds all coordinates of defects
+        defect_coors_pixels = []
 
-        x_pixels = len(processed_image_data)   
-        y_pixels = len(processed_image_data[0])
         x_mm = x_steps * x_fov
         y_mm = y_steps * y_fov
-        x_ratio = x_mm / x_pixels
-        y_ratio = y_mm / y_pixels
+        x_ratio = x_mm / x_length
+        y_ratio = y_mm / y_length
 
-        pixel_ratio = x_pixels * y_pixels / (x_fov * y_fov)
+        pixel_ratio = x_length * y_length / (x_fov * y_fov)
 
         # For each defect based on the minimum and maximum defect size constraints, calculate the number of defects,
 
@@ -223,7 +223,9 @@ class processor(object):
 
             if min_defect_size < defect_pixels < max_defect_size:
 
-                defect_sizes.append(defect_pixels / pixel_ratio)
+                defect_sizes_pixels.append(defect_pixels)
+
+                defect_sizes_mm.append(defect_pixels / pixel_ratio)
 
                 defect_pixel_counter_contour += defect_pixels
 
@@ -257,37 +259,40 @@ class processor(object):
 
             median_y_coordinate = round(sum(pixel[1] for pixel in defect) / len(defect))
 
-            defect_coors.append([median_x_coordinate * x_ratio, median_y_coordinate * y_ratio])
+            defect_coors_pixels.append([median_x_coordinate, median_y_coordinate])
+
+            defect_coors_mm.append([median_x_coordinate * x_ratio, median_y_coordinate * y_ratio])
 
             for pixel in defect:
-                pixel_mm = [pixel[0] * x_ratio, pixel[1] * y_ratio]   
-                new_pixel = np.append(pixel_mm, "BAD")
+                # pixel_mm = [pixel[0] * x_ratio, pixel[1] * y_ratio]
+                new_pixel = np.append(pixel, "BAD")
                 all_defect_coors.append(new_pixel)
 
 
 
         # Converts the sizes and coordinates to NumPy arrays for sorting
 
-        defect_sizes_nparray = np.array(defect_sizes)
+        defect_sizes_mm_nparray = np.array(defect_sizes_mm)
+        defect_sizes_pixels_nparray = np.array(defect_sizes_pixels)
 
-        defect_coors_nparray = np.array(defect_coors)
-
-
-
-        sort = np.argsort(defect_sizes_nparray)  # sorts the arrays according to the defect sizes
+        defect_coors_mm_nparray = np.array(defect_coors_mm)
+        defect_coors_pixels_nparray = np.array(defect_coors_pixels)
 
 
 
+        sort_mm = np.argsort(defect_sizes_mm_nparray)  # sorts the arrays according to the defect sizes
+        sort_pixels = np.argsort(defect_sizes_pixels_nparray)
         # Sorts the sizes and coordinates from largest to smallest size
 
-        defect_pixel_array_sorted = defect_sizes_nparray[sort][::-1]
+        defect_pixel_mm_array_sorted = defect_sizes_mm_nparray[sort_mm][::-1]
+        defect_pixel_array_sorted = defect_sizes_pixels_nparray[sort_pixels][::-1]
 
-        defect_coors_sorted = defect_coors_nparray[sort][::-1]
+        defect_coors_mm_sorted = defect_coors_mm_nparray[sort_mm][::-1]
+        defect_coors_pixels_sorted = defect_coors_pixels_nparray[sort_mm][::-1]
 
 
-
-        defect_coors_and_size = np.hstack((defect_coors_sorted, np.atleast_2d(defect_pixel_array_sorted).T))
-
+        defect_coors_and_size_mm = np.hstack((defect_coors_mm_sorted, np.atleast_2d(defect_pixel_mm_array_sorted).T))
+        defect_coors_and_size_pixels = np.hstack((defect_coors_pixels_sorted, np.atleast_2d(defect_pixel_array_sorted).T))
 
 
         # Prints all relevant statistics below
@@ -320,7 +325,8 @@ class processor(object):
 
         csv_overall_headers = ['X', 'Y', '#']
 
-        overall_stats = [str(x_mm), str(y_mm), str(number_of_defects)]
+        overall_stats_mm = [str(x_mm), str(y_mm), str(number_of_defects)]
+        overall_stats_pixels = [str(x_length), str(y_length), str(number_of_defects)]
 
 
 
@@ -332,13 +338,13 @@ class processor(object):
 
 
 
-        output_data_path = os.path.join(directory_path, image_name + "(def_center_and_size)")
+        output_data_path_mm = os.path.join(directory_path, image_name + "(def_center_and_size_mm)")
+        output_data_path_pixels = os.path.join(directory_path, image_name + "(def_center_and_size_pixels")
 
-        output_data_path_coors = os.path.join(directory_path, image_name + "(all_def_coor)")
+        output_data_path_coors_pixels = os.path.join(directory_path, image_name + "(all_def_coor)")
 
 
-
-        final_output_data_path_coors = self.final_output_path(output_data_path_coors)
+        final_output_data_path_coors = self.final_output_path(output_data_path_coors_pixels)
 
 
 
@@ -352,7 +358,7 @@ class processor(object):
 
             csvwriter.writerow(csv_overall_headers)
 
-            csvwriter.writerow(overall_stats)
+            csvwriter.writerow(overall_stats_pixels)
 
             csvwriter.writerow(csv_all_def_coor_headers)
 
@@ -360,7 +366,7 @@ class processor(object):
 
 
 
-        final_output_data_path = self.final_output_path(output_data_path)
+        final_output_data_path_mm = self.final_output_path(output_data_path_mm)
 
 
 
@@ -368,17 +374,27 @@ class processor(object):
 
 
 
-        with open(final_output_data_path, 'w+') as csvfile:  # Writes the headers and statistics to the file
+        with open(final_output_data_path_mm, 'w+') as csvfile:  # Writes the headers and statistics to the file
 
             csvwriter = csv.writer(csvfile, delimiter=',')
 
             csvwriter.writerow(csv_defect_headers)
 
-            csvwriter.writerows(defect_coors_and_size)
+            csvwriter.writerows(defect_coors_and_size_mm)
+
+        final_output_data_path_pixels = self.final_output_path(output_data_path_pixels)
+
+        with open(final_output_data_path_pixels, 'w+') as csvfile:
+
+            csvwriter = csv.writer(csvfile, delimiter=',')
+
+            csvwriter.writerow(csv_defect_headers)
+
+            csvwriter.writerows(defect_coors_and_size_pixels)
 
 
 
-        return final_output_data_path_coors, final_output_data_path
+        return final_output_data_path_coors, final_output_data_path_mm, final_output_data_path_pixels
 
 
 

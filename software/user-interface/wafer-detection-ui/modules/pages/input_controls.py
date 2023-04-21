@@ -34,16 +34,25 @@ from modules.utils.stitch_image_snake_func import stitch_images_snake
 import os
 from modules.utils.vignes_test import processor
 from data import wfdata
+from pixelink import PxLapi
+from CameraCode import *
+from matplotlib import pyplot as plt
+import threading
+from PIL import Image
+from functools import partial
+
+from kivy.clock import Clock
+import time
 
 
-from modules.wafermaps.wafer_map_screen import WaferMap
-
-
+UPDATE_MAP = False
 
 
 my_path = "/"    
+# global directory = ""
 
 class InputControls(BoxLayout):
+    
     launched = False
     def __init__(self, **kwargs):
         super(InputControls, self).__init__(**kwargs)
@@ -366,60 +375,68 @@ class InputControls(BoxLayout):
        
      # Define a function to run when the auto button is clicked 
     def run_auto(self, instance):
+        # ret = PxLApi.initialize(0)
+        # print(ret[0])
+        # self.hCamera = ret[1]
+        
+        #self.camera_view()
         try:
             if hasattr(self, 'file_path') and self.file_path:
                 directory_path, file_name = os.path.split(self.file_path)
                 print('Directory path:', directory_path)
                 print('File name:', file_name)
 
-                self.gcodeExecutor.directory = directory_path + '/' + file_name + '/' + self.folder_name_field.text
+                self.gcodeExecutor.directory = directory_path + '\\' + file_name + '\\' + self.folder_name_field.text
+                self.directory = self.gcodeExecutor.directory
                 print(self.gcodeExecutor.directory)
                 self.gcodeExecutor.input_wafer_size = self.text_input_port_auto.text
                 self.gcodeExecutor.run_auto()
             else:
                 print('File path is empty')
                 if self.directory_field.text:
-                    self.gcodeExecutor.directory = self.directory_field.text + '/' + self.folder_name_field.text
+                    self.gcodeExecutor.directory = self.directory_field.text + '\\' + self.folder_name_field.text
+                    self.directory = self.gcodeExecutor.directory
                     self.gcodeExecutor.input_wafer_size = self.text_input_port_auto.text
                     print(self.gcodeExecutor.directory)
                     self.gcodeExecutor.run_auto()
                 else:
                     display_error(5)
+
+            with open('config.cfg', 'w+') as f:
+                f.write(self.gcodeExecutor.directory)
         except:
             display_error(4)
+
 
     def continue_auto(self, instance):       
         #self.gcodeExecutor.continue_auto()
         #try:
-        if hasattr(self, 'file_path') and self.file_path:
-            directory_path, file_name = os.path.split(self.file_path)
-            print('Directory path:', directory_path)
-            print('File name:', file_name)
-
-            self.gcodeExecutor.directory = directory_path + '/' + file_name + '/' + self.folder_name_field.text
-            print(self.gcodeExecutor.directory)
-            self.gcodeExecutor.input_wafer_size = self.text_input_port_auto.text
-        else:
-            print('File path is empty')
-            if self.directory_field.text:
-                self.gcodeExecutor.directory = self.directory_field.text + '/' + self.folder_name_field.text
+        UPDATE_CAMERA = False
+        try:
+            if hasattr(self, 'file_path') and self.file_path:
+                directory_path, file_name = os.path.split(self.file_path)
+                print('Directory path:', directory_path)
+                print('File name:', file_name)
+                self.gcodeExecutor.directory = directory_path + '\\' + file_name + '\\' + self.folder_name_field.text
+                self.directory = self.gcodeExecutor.directory
+                # print(self.gcodeExecutor.directory)
                 self.gcodeExecutor.input_wafer_size = self.text_input_port_auto.text
-                print(self.gcodeExecutor.directory)
             else:
-                display_error(5)
-        self.gcodeExecutor.continue_auto()
-        WaferMap.update_map()
-
-        # except:
-        #     display_error(4)
-
-        wfdata.set_dir(self.gcodeExecutor.directory)
-
-
+                print('File path is empty')
+                if self.directory_field.text:
+                    self.gcodeExecutor.directory = self.directory_field.text + '\\' + self.folder_name_field.text
+                    self.directory = self.gcodeExecutor.directory
+                    self.gcodeExecutor.input_wafer_size = self.text_input_port_auto.text
+                    # print(self.gcodeExecutor.directory)
+                else:
+                    display_error(5)
+            self.gcodeExecutor.continue_auto()
+        except:
+            display_error(4)
         
-
-
-        
+        UPDATE_MAP = True
+        time.sleep(4)
+        UPDATE_MAP = False
 
 
     #Print values for the sliders
@@ -475,3 +492,5 @@ class InputControls(BoxLayout):
         #                     self.ids.image_name_field.text,
         #                     self.ids.xval_field.text,
         #                     self.ids.yval_field.text,)
+
+    

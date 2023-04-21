@@ -171,16 +171,17 @@ class GCodeExecutor(object):
                 print(command)
                 command += "\n"
                 ser1.write(command.encode())
+                time.sleep(1.5)
                 picture += 1 
                 save_image(self.directory, picture)
-                #time.sleep(0.3)
             command = "G0 Y-" + str(y_fov) +"\n"
             print(command)
             ser1.write(command.encode())
+            time.sleep(1.5)  
             if(y != y_steps-1):
                 picture += 1 
                 save_image(self.directory, picture)
-            #time.sleep(0.3)
+            
 
         self.proc = processor()
         self.proc.IMG_DIR = self.directory

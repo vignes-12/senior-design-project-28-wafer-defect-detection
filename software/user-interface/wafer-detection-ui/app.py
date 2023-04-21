@@ -1,5 +1,7 @@
 import gc
 import os
+from pixelinkWrapper import *
+from pixelink import PixeLINK
 
 os.environ['KIVY_IMAGE'] = 'pil'
 
@@ -40,6 +42,8 @@ from kivy.uix.spinner import Spinner
 from kivy.clock import Clock
 
 from modules.pages.full_scan import FullScan
+
+import CameraCode
 
 # Camera Python script
 #from CameraCode import *
@@ -153,7 +157,7 @@ class MainApp(MDApp):
             
 if __name__ == "__main__":
     #Window.fullscreen = 'auto'
-    #Window.maximize()
+    Window.maximize()
     
     try:
         MainApp().run()
@@ -162,6 +166,7 @@ if __name__ == "__main__":
     finally:
         print('Closing camera...')
         torun = False
+        PxLApi.uninitialize(CameraCode.hCamera)
         print('Waiting for thread...')
         #th.join()
         print('Done.')

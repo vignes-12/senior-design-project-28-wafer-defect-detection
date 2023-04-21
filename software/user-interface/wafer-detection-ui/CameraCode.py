@@ -16,13 +16,16 @@ SUCCESS = 0
 FAILURE = 1
 
 CAMERA_DIR = "C:\\Project-28-Error-Detection-on-Wafer-Surfaces\\software\\user-interface\\processed-stitched-snake\\getSnapshot\\"
+ret = PxLApi.initialize(0)
+hCamera = ret[1]
+UPDATE_CAMERA = True
 
-def get_temp_image(hCamera, imageFormat):
+def get_temp_image(imageFormat):
 
     assert 0 != hCamera
     
     # Determine the size of buffer we'll need to hold an image from the camera
-    rawImageSize = determine_raw_image_size(hCamera)
+    rawImageSize = determine_raw_image_size()
     if 0 == rawImageSize:
         return FAILURE
 
@@ -31,7 +34,7 @@ def get_temp_image(hCamera, imageFormat):
 
     if 0 != len(rawImage):
         # Capture a raw image. The raw image buffer will contain image data on success. 
-        ret = get_raw_image(hCamera, rawImage)
+        ret = get_raw_image(rawImage)
         if PxLApi.apiSuccess(ret[0]):
             frameDescriptor = ret[1]
             
@@ -49,13 +52,13 @@ def get_temp_image(hCamera, imageFormat):
 """
 Get a snapshot from the camera, and save to a file.
 """
-def get_snapshot(hCamera, imageFormat, fileName):
+def get_snapshot(imageFormat, fileName):
 
     assert 0 != hCamera
     assert fileName
     
     # Determine the size of buffer we'll need to hold an image from the camera
-    rawImageSize = determine_raw_image_size(hCamera)
+    rawImageSize = determine_raw_image_size()
     if 0 == rawImageSize:
         return FAILURE
 
@@ -64,7 +67,7 @@ def get_snapshot(hCamera, imageFormat, fileName):
 
     if 0 != len(rawImage):
         # Capture a raw image. The raw image buffer will contain image data on success. 
-        ret = get_raw_image(hCamera, rawImage)
+        ret = get_raw_image(rawImage)
         if PxLApi.apiSuccess(ret[0]):
             frameDescriptor = ret[1]
             
@@ -100,7 +103,7 @@ Using this information, we can calculate the size of a raw image
 
 Returns 0 on failure
 """
-def determine_raw_image_size(hCamera):
+def determine_raw_image_size():
 
     assert 0 != hCamera
 
@@ -149,7 +152,7 @@ So, if you're using hardware triggering, it won't return until the camera is tri
 
 Returns a return code with success and frame descriptor information or API error
 """
-def get_raw_image(hCamera, rawImage):
+def get_raw_image(rawImage):
 
     assert 0 != hCamera
     assert 0 != len(rawImage)
@@ -210,16 +213,15 @@ def save_image_to_file(fileName, formatedImage):
 def save_image(directory, pic):
     
     filenameJpeg = directory + str(pic) + ".jpeg" 
-
     # Tell the camera we want to start using it.
     # NOTE: We're assuming there's only one camera.
-    ret = PxLApi.initialize(0)
-    if not PxLApi.apiSuccess(ret[0]):
-        return 1
-    hCamera = ret[1]
+    # ret = PxLApi.initialize(0)
+    # if not PxLApi.apiSuccess(ret[0]):
+    #     return 1
+    # hCamera = ret[1]
 
     # Get a snapshot and save it to a folder as a file
-    retVal = get_snapshot(hCamera, PxLApi.ImageFormat.JPEG, filenameJpeg)
+    retVal = get_snapshot(PxLApi.ImageFormat.JPEG, filenameJpeg)
     if SUCCESS == retVal:
         print("Saved image to 'getSnapshot/%s'" % filenameJpeg)
     else:
@@ -227,11 +229,8 @@ def save_image(directory, pic):
         return FAILURE
 
     # Tell the camera we're done with it.
-    PxLApi.uninitialize(hCamera)
+    # PxLApi.uninitialize(hCamera)
     
     return SUCCESS
 
 
-
-if __name__ == "__main__":
-    main()
